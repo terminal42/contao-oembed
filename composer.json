@@ -1,0 +1,26 @@
+{
+    "name": "terminal42/contao-twitter",
+    "description": "Twitter integration for Contao",
+    "type": "contao-bundle",
+    "license": "LGPL-3.0",
+    "authors": [
+        {
+            "name": "terminal42 gmbh",
+            "homepage":"http://www.terminal42.ch"
+        }
+    ],
+    "require":{
+        "php":">=5.4",
+        "contao/core-bundle":"^4.1"
+    },
+    "autoload":{
+        "psr-4": {
+            "Terminal42\\TwitterBundle\\": ""
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-develop": "1.0.x-dev"
+        }
+    }
+}
