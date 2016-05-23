@@ -17,5 +17,8 @@ class EmbeddedTweetElement extends ContentElement
      */
     protected function compile()
     {
+        if ('FE' === TL_MODE) {
+            $GLOBALS['TL_JAVASCRIPT'][] = 'https://platform.twitter.com/widgets.js|async';
+        }
     }
 }

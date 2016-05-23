@@ -5,6 +5,7 @@ namespace Terminal42\TwitterBundle\DataContainer;
 use Contao\DataContainer;
 use Doctrine\DBAL\Connection;
 use GuzzleHttp\Client;
+use Monolog\Logger;
 
 class ContentDataContainer
 {
@@ -14,36 +15,86 @@ class ContentDataContainer
     private $db;
 
     /**
+     * @var Logger
+     */
+    private $logger;
+
+    /**
      * Constructor.
      *
      * @param Connection $db
+     * @param Logger     $logger
      */
-    public function __construct(Connection $db)
+    public function __construct(Connection $db, Logger $logger = null)
     {
-        $this->db = $db;
+        $this->db     = $db;
+        $this->logger = $logger;
+    }
+
+    public function onSaveTwitterUrl($value)
+    {
+        try {
+
+            $client = new Client();
+            $response = $client->get(
+                'https://publish.twitter.com/oembed',
+                ['query' => $this->prepareQuery((object) ['twitter_url' => $value])]
+            );
+
+            if (!$response->json()['author_url']) {
+                throw new \Exception('Invalid Twitter response: ' . $response->getBody(), 500);
+            }
+
+        } catch (\Exception $e) {
+            if (null !== $this->logger) {
+                $this->logger->info($e->getMessage(), ['exception' => $e]);
+            }
+
+            throw new \Exception(sprintf($GLOBALS['TL_LANG']['ERR']['twitter_url'], $e->getCode()));
+        }
+
+        return $value;
     }
 
     public function onSubmit(DataContainer $dc)
     {
-        if (!$dc->activeRecord || 'embedded_tweet' !== $dc->activeRecord->type) {
+        if (!$dc->activeRecord
+            || 'embedded_tweet' !== $dc->activeRecord->type
+            || '' === $dc->activeRecord->twitter_url
+        ) {
             return;
         }
 
-        $query = ['url' => $dc->activeRecord->twitter_url];
 
-        if (!$dc->activeRecord->twitter_cards) {
+        try {
+            $client   = new Client();
+            $response = $client->get(
+                'https://publish.twitter.com/oembed',
+                ['query' => $this->prepareQuery($dc->activeRecord)]
+            );
+
+            $this->db->update('tl_content', ['html' => $response->json()['html']], ['id' => $dc->id]);
+        } catch (\Exception $e) {
+            return;
+        }
+    }
+
+    private function prepareQuery($data)
+    {
+        $query = [
+            'url'         => $data->twitter_url,
+            'theme'       => $data->twitter_theme,
+            'omit_script' => true,
+        ];
+
+        if (!$data->twitter_cards) {
             $query['hide_media'] = '1';
         }
 
-        if (!$dc->activeRecord->twitter_conversation) {
+        if (!$data->twitter_conversation) {
             $query['hide_thread'] = '1';
         }
 
-        $client = new Client();
-        $response = $client->get('https://publish.twitter.com/oembed', [
-            'query' => $query
-        ]);
-
-        $this->db->update('tl_content', ['html' => $response->getBody()], ['id' => $dc->id]);
+        return $query;
     }
 }
