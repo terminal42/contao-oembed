@@ -17,6 +17,5 @@ class EmbeddedTweetElement extends ContentElement
      */
     protected function compile()
     {
-        // TODO: Implement compile() method.
     }
 }

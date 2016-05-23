@@ -1,6 +1,11 @@
 <?php
 
 /**
+ * Config
+ */
+$GLOBALS['TL_DCA']['tl_content']['config']['onsubmit_callback'][] = ['terminal42_twitter.data_container.content', 'onSubmit'];
+
+/**
  * Palettes
  */
 $GLOBALS['TL_DCA']['tl_content']['palettes']['embedded_tweet'] = '{type_legend},type;{text_legend},html;{template_legend:hide},customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests;{invisible_legend:hide},invisible,start,stop';
@@ -15,9 +20,6 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['twitter_url'] = [
     'inputType' => 'text',
     'eval'      => ['mandatory' => true, 'maxlength' => 255],
     'sql'       => "varchar(255) NOT NULL default ''",
-    'save_callback' => [
-        ['terminal42_twitter.data_container.content', 'onSaveTwitterUrl']
-    ]
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['twitter_cards'] = [

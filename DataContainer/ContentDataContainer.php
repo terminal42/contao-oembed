@@ -4,6 +4,7 @@ namespace Terminal42\TwitterBundle\DataContainer;
 
 use Contao\DataContainer;
 use Doctrine\DBAL\Connection;
+use GuzzleHttp\Client;
 
 class ContentDataContainer
 {
@@ -22,16 +23,27 @@ class ContentDataContainer
         $this->db = $db;
     }
 
-    /**
-     * Save oembedd HTML from Twitter URL to tl_content.html field.
-     *
-     * @param string        $value
-     * @param DataContainer $dc
-     *
-     * @return string
-     */
-    public function onSaveTwitterUrl($value, DataContainer $dc)
+    public function onSubmit(DataContainer $dc)
     {
-        return $value;
+        if (!$dc->activeRecord || 'embedded_tweet' !== $dc->activeRecord->type) {
+            return;
+        }
+
+        $query = ['url' => $dc->activeRecord->twitter_url];
+
+        if (!$dc->activeRecord->twitter_cards) {
+            $query['hide_media'] = '1';
+        }
+
+        if (!$dc->activeRecord->twitter_conversation) {
+            $query['hide_thread'] = '1';
+        }
+
+        $client = new Client();
+        $response = $client->get('https://publish.twitter.com/oembed', [
+            'query' => $query
+        ]);
+
+        $this->db->update('tl_content', ['html' => $response->getBody()], ['id' => $dc->id]);
     }
 }
