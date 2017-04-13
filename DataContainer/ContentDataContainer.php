@@ -5,7 +5,7 @@ namespace Terminal42\TwitterBundle\DataContainer;
 use Contao\DataContainer;
 use Doctrine\DBAL\Connection;
 use GuzzleHttp\Client;
-use Monolog\Logger;
+use Psr\Log\LoggerInterface;
 
 class ContentDataContainer
 {
@@ -15,42 +15,40 @@ class ContentDataContainer
     private $db;
 
     /**
-     * @var Logger
+     * @var LoggerInterface
      */
     private $logger;
 
     /**
+     * @var array
+     */
+    private $responseCache;
+
+    /**
      * Constructor.
      *
-     * @param Connection $db
-     * @param Logger     $logger
+     * @param Connection      $db
+     * @param LoggerInterface $logger
      */
-    public function __construct(Connection $db, Logger $logger = null)
+    public function __construct(Connection $db, LoggerInterface $logger = null)
     {
         $this->db     = $db;
         $this->logger = $logger;
     }
 
-    public function onSaveTwitterUrl($value)
+    public function onSaveTwitterUrl($value, DataContainer $dc)
     {
         try {
-
-            $client = new Client();
-            $response = $client->get(
-                'https://publish.twitter.com/oembed',
-                ['query' => $this->prepareQuery((object) ['twitter_url' => $value])]
-            );
-
-            if (!$response->json()['author_url']) {
-                throw new \Exception('Invalid Twitter response: ' . $response->getBody(), 500);
-            }
-
+            $this->getHtmlForQuery($this->prepareQueryForType(
+                $dc->activeRecord->type,
+                (object) ['twitter_url' => $value]
+            ));
         } catch (\Exception $e) {
             if (null !== $this->logger) {
                 $this->logger->info($e->getMessage(), ['exception' => $e]);
             }
 
-            throw new \Exception(sprintf($GLOBALS['TL_LANG']['ERR']['twitter_url'], $e->getCode()));
+            throw new \RuntimeException(sprintf($GLOBALS['TL_LANG']['ERR']['twitter_url'], $e->getCode()));
         }
 
         return $value;
@@ -65,36 +63,77 @@ class ContentDataContainer
             return;
         }
 
-
         try {
-            $client   = new Client();
-            $response = $client->get(
-                'https://publish.twitter.com/oembed',
-                ['query' => $this->prepareQuery($dc->activeRecord)]
+            $html = $this->getHtmlForQuery(
+                $this->prepareQueryForType($dc->activeRecord->type, $dc->activeRecord)
             );
 
-            $this->db->update('tl_content', ['html' => $response->json()['html']], ['id' => $dc->id]);
+            $this->db->update(
+                'tl_content',
+                [
+                    'html' => $html,
+                ],
+                ['id' => $dc->id]
+            );
         } catch (\Exception $e) {
             return;
         }
     }
 
-    private function prepareQuery($data)
+    private function prepareQueryForType($type, $data)
     {
-        $query = [
-            'url'         => $data->twitter_url,
-            'theme'       => $data->twitter_theme,
-            'omit_script' => true,
-        ];
+        if ('embedded_tweet' === $type) {
+            $query = [
+                'url'         => $data->twitter_url,
+                'theme'       => $data->twitter_theme,
+                'omit_script' => true,
+            ];
 
-        if (!$data->twitter_cards) {
-            $query['hide_media'] = '1';
-        }
+            if (!$data->twitter_cards) {
+                $query['hide_media'] = '1';
+            }
 
-        if (!$data->twitter_conversation) {
-            $query['hide_thread'] = '1';
+            if (!$data->twitter_conversation) {
+                $query['hide_thread'] = '1';
+            }
+        } elseif ('user_timeline' === $type) {
+            $query = [
+                'url'         => $data->twitter_url,
+                'theme'       => $data->twitter_theme,
+                'omit_script' => true,
+            ];
+        } else {
+            throw new \InvalidArgumentException(sprintf('Unknown element type "%s"', $type));
         }
 
         return $query;
+    }
+
+    /**
+     * @param array $query
+     *
+     * @return string
+     * @throws \Exception
+     */
+    private function getHtmlForQuery(array $query)
+    {
+        ksort($query, SORT_STRING);
+        $hash = md5(http_build_query($query));
+
+        if (!isset($this->responseCache[$hash])) {
+            $client   = new Client();
+            $response = $client->get(
+                'https://publish.twitter.com/oembed',
+                ['query' => $query]
+            );
+
+            if (($status = $response->getStatusCode()) < 200 || $status >= 300) {
+                throw new \RuntimeException('Invalid Twitter response: ' . $response->getBody(), $status);
+            }
+
+            $this->responseCache[$hash] = $response->json()['html'];
+        }
+
+        return $this->responseCache[$hash];
     }
 }

@@ -9,6 +9,7 @@ $GLOBALS['TL_DCA']['tl_content']['config']['onsubmit_callback'][] = ['terminal42
  * Palettes
  */
 $GLOBALS['TL_DCA']['tl_content']['palettes']['embedded_tweet'] = '{type_legend},type;{include_legend},twitter_url,twitter_theme,twitter_cards,twitter_conversation;{template_legend:hide},customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests;{invisible_legend:hide},invisible,start,stop';
+$GLOBALS['TL_DCA']['tl_content']['palettes']['user_timeline'] = '{type_legend},type;{include_legend},twitter_url,twitter_theme;{template_legend:hide},customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests;{invisible_legend:hide},invisible,start,stop';
 
 
 /**
