@@ -57,7 +57,7 @@ class ContentDataContainer
     public function onSubmit(DataContainer $dc)
     {
         if (!$dc->activeRecord
-            || 'embedded_tweet' !== $dc->activeRecord->type
+            || !in_array($dc->activeRecord->type, ['embedded_tweet', 'user_timeline'])
             || '' === $dc->activeRecord->twitter_url
         ) {
             return;
@@ -87,6 +87,8 @@ class ContentDataContainer
                 'url'         => $data->twitter_url,
                 'theme'       => $data->twitter_theme,
                 'omit_script' => true,
+                'aria_polite' => 'assertive',
+                'dnt'         => true,
             ];
 
             if (!$data->twitter_cards) {
@@ -101,7 +103,18 @@ class ContentDataContainer
                 'url'         => $data->twitter_url,
                 'theme'       => $data->twitter_theme,
                 'omit_script' => true,
+                'aria_polite' => 'assertive',
+                'dnt'         => true,
             ];
+
+            if ($data->twitter_limit > 0 && $data->twitter_limit <= 20) {
+                $query['limit'] = $data->twitter_limit;
+            }
+
+            if (!empty($chrome = deserialize($data->twitter_chrome))) {
+                $query['chrome'] = implode(' ', $chrome);
+            }
+
         } else {
             throw new \InvalidArgumentException(sprintf('Unknown element type "%s"', $type));
         }
