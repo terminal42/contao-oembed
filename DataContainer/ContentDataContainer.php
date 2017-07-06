@@ -4,7 +4,10 @@ namespace Terminal42\TwitterBundle\DataContainer;
 
 use Contao\DataContainer;
 use Doctrine\DBAL\Connection;
-use GuzzleHttp\Client;
+use Http\Client\HttpClient;
+use Http\Discovery\HttpClientDiscovery;
+use Http\Discovery\MessageFactoryDiscovery;
+use Http\Message\MessageFactory;
 use Psr\Log\LoggerInterface;
 
 class ContentDataContainer
@@ -20,6 +23,16 @@ class ContentDataContainer
     private $logger;
 
     /**
+     * @var HttpClient|null
+     */
+    private $httpClient;
+
+    /**
+     * @var MessageFactory
+     */
+    private $requestFactory;
+
+    /**
      * @var array
      */
     private $responseCache;
@@ -27,13 +40,18 @@ class ContentDataContainer
     /**
      * Constructor.
      *
-     * @param Connection      $db
-     * @param LoggerInterface $logger
+     * @param Connection          $db
+     * @param LoggerInterface     $logger
+     * @param HttpClient|null     $httpClient
+     * @param MessageFactory|null $messageFactory
      */
-    public function __construct(Connection $db, LoggerInterface $logger = null)
+    public function __construct(Connection $db, LoggerInterface $logger = null, HttpClient $httpClient = null, MessageFactory $messageFactory = null)
     {
         $this->db     = $db;
         $this->logger = $logger;
+
+        $this->httpClient = $httpClient ?: HttpClientDiscovery::find();
+        $this->requestFactory = $messageFactory ?: MessageFactoryDiscovery::find();
     }
 
     public function onSaveTwitterUrl($value, DataContainer $dc)
@@ -134,17 +152,17 @@ class ContentDataContainer
         $hash = md5(http_build_query($query));
 
         if (!isset($this->responseCache[$hash])) {
-            $client   = new Client();
-            $response = $client->get(
-                'https://publish.twitter.com/oembed',
-                ['query' => $query]
+            $response = $this->httpClient->sendRequest(
+                $this->requestFactory->createRequest('GET', 'https://publish.twitter.com/oembed?' . $query)
             );
 
             if (($status = $response->getStatusCode()) < 200 || $status >= 300) {
                 throw new \RuntimeException('Invalid Twitter response: ' . $response->getBody(), $status);
             }
 
-            $this->responseCache[$hash] = $response->json()['html'];
+            $json = json_decode((string) $response->getBody(), true);
+
+            $this->responseCache[$hash] = $json['html'];
         }
 
         return $this->responseCache[$hash];
