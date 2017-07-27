@@ -3,3 +3,4 @@ services:
         class: Terminal42\TwitterBundle\DataContainer\ContentDataContainer
         arguments:
             - "@database_connection"
+            - "@logger"

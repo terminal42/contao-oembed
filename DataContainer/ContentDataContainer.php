@@ -100,15 +100,18 @@ class ContentDataContainer
 
     private function prepareQueryForType($type, $data)
     {
-        if ('embedded_tweet' === $type) {
-            $query = [
-                'url'         => $data->twitter_url,
-                'theme'       => $data->twitter_theme,
-                'omit_script' => true,
-                'aria_polite' => 'assertive',
-                'dnt'         => true,
-            ];
+        $query = [
+            'url'         => $data->twitter_url,
+            'omit_script' => true,
+            'aria_polite' => 'assertive',
+            'dnt'         => true,
+        ];
 
+        if ($data->twitter_theme) {
+            $query['theme'] = $data->twitter_theme;
+        }
+
+        if ('embedded_tweet' === $type) {
             if (!$data->twitter_cards) {
                 $query['hide_media'] = '1';
             }
@@ -117,14 +120,6 @@ class ContentDataContainer
                 $query['hide_thread'] = '1';
             }
         } elseif ('user_timeline' === $type) {
-            $query = [
-                'url'         => $data->twitter_url,
-                'theme'       => $data->twitter_theme,
-                'omit_script' => true,
-                'aria_polite' => 'assertive',
-                'dnt'         => true,
-            ];
-
             if ($data->twitter_limit > 0 && $data->twitter_limit <= 20) {
                 $query['limit'] = $data->twitter_limit;
             }
@@ -149,7 +144,8 @@ class ContentDataContainer
     private function getHtmlForQuery(array $query)
     {
         ksort($query, SORT_STRING);
-        $hash = md5(http_build_query($query));
+        $query = http_build_query($query);
+        $hash = md5($query);
 
         if (!isset($this->responseCache[$hash])) {
             $response = $this->httpClient->sendRequest(
