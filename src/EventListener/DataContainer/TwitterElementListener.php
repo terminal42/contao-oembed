@@ -45,7 +45,7 @@ class TwitterElementListener
      * @param HttpClient|null     $httpClient
      * @param MessageFactory|null $messageFactory
      */
-    public function __construct(Connection $db, LoggerInterface $logger = null, HttpClient $httpClient = null, MessageFactory $messageFactory = null)
+    public function __construct(Connection $database, LoggerInterface $logger = null, HttpClient $httpClient = null, MessageFactory $messageFactory = null)
     {
         $this->database = $database;
         $this->logger = $logger;
