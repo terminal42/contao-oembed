@@ -1,6 +1,6 @@
 <?php
 
-namespace Terminal42\OEmbedBundle\DataContainer;
+namespace Terminal42\OEmbedBundle\EventListener\DataContainer;
 
 use Contao\DataContainer;
 use Doctrine\DBAL\Connection;
@@ -10,12 +10,12 @@ use Http\Discovery\MessageFactoryDiscovery;
 use Http\Message\MessageFactory;
 use Psr\Log\LoggerInterface;
 
-class ContentDataContainer
+class TwitterElementListener
 {
     /**
      * @var Connection
      */
-    private $db;
+    private $database;
 
     /**
      * @var LoggerInterface
@@ -47,14 +47,14 @@ class ContentDataContainer
      */
     public function __construct(Connection $db, LoggerInterface $logger = null, HttpClient $httpClient = null, MessageFactory $messageFactory = null)
     {
-        $this->db     = $db;
+        $this->database = $database;
         $this->logger = $logger;
 
         $this->httpClient = $httpClient ?: HttpClientDiscovery::find();
         $this->requestFactory = $messageFactory ?: MessageFactoryDiscovery::find();
     }
 
-    public function onSaveTwitterUrl($value, DataContainer $dc)
+    public function onSaveCallback($value, DataContainer $dc)
     {
         try {
             $this->getHtmlForQuery($this->prepareQueryForType(
@@ -72,7 +72,7 @@ class ContentDataContainer
         return $value;
     }
 
-    public function onSubmit(DataContainer $dc)
+    public function onSubmitCallback(DataContainer $dc)
     {
         if (!$dc->activeRecord
             || !in_array($dc->activeRecord->type, ['embedded_tweet', 'user_timeline'])
@@ -86,7 +86,7 @@ class ContentDataContainer
                 $this->prepareQueryForType($dc->activeRecord->type, $dc->activeRecord)
             );
 
-            $this->db->update(
+            $this->database->update(
                 'tl_content',
                 [
                     'html' => $html,

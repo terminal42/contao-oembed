@@ -1,7 +1,9 @@
 services:
-    terminal42_twitter.data_container.content:
-        class: Terminal42\OEmbedBundle\DataContainer\ContentDataContainer
-        public: true
+    terminal42_twitter.listener.twitter_element:
+        class: Terminal42\OEmbedBundle\EventListener\DataContainer\TwitterElementListener
         arguments:
-            - "@database_connection"
-            - "@logger"
+            - '@database_connection'
+            - '@logger'
+        tags:
+            - { name: contao.callback, table: tl_content, target: config.onsubmit }
+            - { name: contao.callback, table: tl_content, target: fields.twitter_url.save }

@@ -10,8 +10,8 @@
         }
     ],
     "require":{
-        "php":"^5.4 || ^7.0",
-        "contao/core-bundle":"^4.4",
+        "php":"^7.1",
+        "contao/core-bundle":"^4.7",
         "psr/http-message": "^1.0",
         "php-http/client-implementation": "^1.0",
         "php-http/httplug": "^1.0",
