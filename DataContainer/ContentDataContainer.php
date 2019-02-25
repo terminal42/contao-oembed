@@ -1,6 +1,6 @@
 <?php
 
-namespace Terminal42\TwitterBundle\DataContainer;
+namespace Terminal42\OEmbedBundle\DataContainer;
 
 use Contao\DataContainer;
 use Doctrine\DBAL\Connection;

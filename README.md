@@ -1,5 +1,5 @@
 
-# terminal42/contao-twitter
+# terminal42/contao-oembed
 
 A Contao 4 bundle to integration several Twitter widgets into a website.
 
@@ -14,7 +14,7 @@ Open a command console, enter your project directory and execute the
 following command to download the latest stable version of this bundle:
 
 ```bash
-$ composer require terminal42/contao-twitter "^1.0@dev"
+$ composer require terminal42/contao-oembed "^1.0@dev"
 ```
 
 This command requires you to have Composer installed globally, as explained
@@ -38,7 +38,7 @@ class AppKernel extends Kernel
         $bundles = array(
             // ...
 
-            new Terminal42\TwitterBundle\Terminal42TwitterBundle(),
+            new Terminal42\OEmbedBundle\Terminal42TwitterBundle(),
         );
 
         // ...
@@ -53,7 +53,7 @@ class AppKernel extends Kernel
 
 ### 1. Single Tweet
 
-A new content element to embedd a single tweet. 
+A new content element to embedd a single tweet.
 
 
 ## License

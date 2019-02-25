@@ -1,6 +1,6 @@
 {
-    "name": "terminal42/contao-twitter",
-    "description": "Twitter integration for Contao",
+    "name": "terminal42/contao-oembed",
+    "description": "Various oEmbed elements for Contao CMS",
     "type": "contao-bundle",
     "license": "LGPL-3.0",
     "authors": [
@@ -26,13 +26,13 @@
     },
     "autoload":{
         "psr-4": {
-            "Terminal42\\TwitterBundle\\": ""
+            "Terminal42\\OEmbedBundle\\": ""
         }
     },
     "extra": {
         "branch-alias": {
             "dev-develop": "1.0.x-dev"
         },
-        "contao-manager-plugin": "Terminal42\\TwitterBundle\\ContaoManager\\Plugin"
+        "contao-manager-plugin": "Terminal42\\OEmbedBundle\\ContaoManager\\Plugin"
     }
 }

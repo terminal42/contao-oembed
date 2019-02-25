@@ -1,6 +1,6 @@
 <?php
 
-namespace Terminal42\TwitterBundle\ContentElement;
+namespace Terminal42\OEmbedBundle\ContentElement;
 
 use Contao\ContentElement;
 
