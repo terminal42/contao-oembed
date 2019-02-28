@@ -1,6 +1,7 @@
 services:
     terminal42_twitter.data_container.content:
         class: Terminal42\TwitterBundle\DataContainer\ContentDataContainer
+        public: true
         arguments:
             - "@database_connection"
             - "@logger"
