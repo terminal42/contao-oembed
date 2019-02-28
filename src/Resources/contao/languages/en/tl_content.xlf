@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.1">
+    <file datatype="php" original="src/Resources/contao/languages/en/tl_content.php" source-language="en">
+        <body>
+            <trans-unit id="tl_content.twitter_url.0">
+                <source>Twitter-URL</source>
+            </trans-unit>
+            <trans-unit id="tl_content.twitter_url.1">
+                <source>Please enter an URL of a tweet.</source>
+            </trans-unit>
+            <trans-unit id="tl_content.twitter_cards.0">
+                <source>Show Cards</source>
+            </trans-unit>
+            <trans-unit id="tl_content.twitter_cards.1">
+                <source>When disabled, links in a Tweet are not expanded to photo, video, or link previews.</source>
+            </trans-unit>
+            <trans-unit id="tl_content.twitter_conversation.0">
+                <source>Show Conversation</source>
+            </trans-unit>
+            <trans-unit id="tl_content.twitter_conversation.1">
+                <source>When disabled, only the cited Tweet will be displayed even if it is in reply to another Tweet.</source>
+            </trans-unit>
+            <trans-unit id="tl_content.twitter_theme.0">
+                <source>Theme</source>
+            </trans-unit>
+            <trans-unit id="tl_content.twitter_theme.1">
+                <source>When set to <i>Dark</i>, displays Tweet with light text over a dark background.</source>
+            </trans-unit>
+            <trans-unit id="tl_content.twitter_theme.light">
+                <source>Light</source>
+            </trans-unit>
+            <trans-unit id="tl_content.twitter_theme.dark">
+                <source>Dark</source>
+            </trans-unit>
+            <trans-unit id="tl_content.twitter_limit.0">
+                <source>Number of items</source>
+            </trans-unit>
+            <trans-unit id="tl_content.twitter_limit.1">
+                <source>Display up to N items where N is a value between 1 and 20 inclusive.</source>
+            </trans-unit>
+            <trans-unit id="tl_content.twitter_chrome.0">
+                <source>Display configuration</source>
+            </trans-unit>
+            <trans-unit id="tl_content.twitter_chrome.1">
+                <source>Configure how the Twitter output should look like.</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

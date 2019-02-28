@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.1">
+    <file datatype="php" original="src/Resources/contao/languages/en/default.php" source-language="en">
+        <body>
+            <trans-unit id="ERR.twitter_url">
+                <source>Invalid Twitter URL (HTTP Status %s)</source>
+            </trans-unit>
+            <trans-unit id="CTE.twitter">
+                <source>Twitter</source>
+            </trans-unit>
+            <trans-unit id="CTE.oembed_twitter">
+                <source>Embedded Tweet</source>
+            </trans-unit>
+            <trans-unit id="CTE.user_timeline">
+                <source>User Timeline</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
