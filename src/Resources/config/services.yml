@@ -20,14 +20,14 @@ services:
     terminal42_oembed.controller.tweet:
         class: Terminal42\OEmbedBundle\Controller\OEmbedController
         tags:
-            - { name: contao.content_element, type: embedded_tweet, category: twitter }
+            - { name: contao.content_element, type: embedded_tweet, category: media }
 
     terminal42_oembed.controller.user_timline:
         class: Terminal42\OEmbedBundle\Controller\OEmbedController
         tags:
-            - { name: contao.content_element, type: user_timline, category: twitter }
+            - { name: contao.content_element, type: user_timline, category: media }
 
     terminal42_oembed.controller.instragram_post:
         class: Terminal42\OEmbedBundle\Controller\OEmbedController
         tags:
-            - { name: contao.content_element, type: embedded_instagram_post, category: instragram }
+            - { name: contao.content_element, type: embedded_instagram_post, category: media }
