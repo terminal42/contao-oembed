@@ -8,14 +8,14 @@
             <trans-unit id="ERR.instagram_url">
                 <source>Invalid Instagram URL (HTTP Status %s)</source>
             </trans-unit>
-            <trans-unit id="CTE.twitter">
-                <source>Twitter</source>
-            </trans-unit>
-            <trans-unit id="CTE.oembed_twitter">
+            <trans-unit id="CTE.embedded_tweet">
                 <source>Embedded Tweet</source>
             </trans-unit>
-            <trans-unit id="CTE.user_timeline">
+            <trans-unit id="CTE.user_timline">
                 <source>User Timeline</source>
+            </trans-unit>
+            <trans-unit id="CTE.embedded_instagram_post">
+                <source>Embedded Instagram post</source>
             </trans-unit>
         </body>
     </file>
