@@ -86,11 +86,3 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['instagram_hidecaption'] = [
     'eval'      => ['tl_class' => 'w50 m12'],
     'sql'       => ['type' => 'string', 'length' => 1, 'fixed' => true, 'default' => ''],
 ];
-
-$GLOBALS['TL_DCA']['tl_content']['fields']['instagram_omitscript'] = [
-    'label'     => &$GLOBALS['TL_LANG']['tl_content']['instagram_omitscript'],
-    'exclude'   => true,
-    'inputType' => 'checkbox',
-    'eval'      => ['tl_class' => 'w50 m12'],
-    'sql'       => ['type' => 'string', 'length' => 1, 'fixed' => true, 'default' => ''],
-];

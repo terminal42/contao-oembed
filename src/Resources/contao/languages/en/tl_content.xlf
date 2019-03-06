@@ -62,12 +62,6 @@
             <trans-unit id="tl_content.instagram_hidecaption.1">
                 <source>If set to true, the embed code hides the caption.</source>
             </trans-unit>
-            <trans-unit id="tl_content.instagram_omitscript.0">
-                <source>Omit script</source>
-            </trans-unit>
-            <trans-unit id="tl_content.instagram_omitscript.1">
-                <source>If set to true, the embed code does not include the script tag. This is useful for websites that want to handle the loading of the embeds.js script by themselves. To manually initialize the embed code, call the JS function instgrm.Embeds.process().</source>
-            </trans-unit>
         </body>
     </file>
 </xliff>

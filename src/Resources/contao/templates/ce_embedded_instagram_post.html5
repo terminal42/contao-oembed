@@ -1,3 +1,4 @@
+<?php if ('FE' === TL_MODE) $GLOBALS['TL_JAVASCRIPT'][] = 'https://www.instagram.com/embed.js|async'; ?>
 <?php $this->extend('block_searchable'); ?>
 
 <?php $this->block('content'); ?>

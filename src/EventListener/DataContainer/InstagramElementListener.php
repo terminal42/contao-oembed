@@ -103,7 +103,7 @@ class InstagramElementListener
             'url'         => $data->instagram_url,
             'maxwidth'    => null,
             'hidecaption' => false,
-            'omitscript'  => false,
+            'omitscript'  => '1',
         ];
 
         if ($data->instagram_maxwidth) {
@@ -112,10 +112,6 @@ class InstagramElementListener
 
         if ($data->instagram_hidecaption) {
             $query['hidecaption'] = '1';
-        }
-
-        if ($data->instagram_omitscript) {
-            $query['omitscript'] = '1';
         }
 
         return $query;
