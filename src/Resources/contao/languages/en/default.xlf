@@ -5,6 +5,9 @@
             <trans-unit id="ERR.twitter_url">
                 <source>Invalid Twitter URL (HTTP Status %s)</source>
             </trans-unit>
+            <trans-unit id="ERR.instagram_url">
+                <source>Invalid Instagram URL (HTTP Status %s)</source>
+            </trans-unit>
             <trans-unit id="CTE.twitter">
                 <source>Twitter</source>
             </trans-unit>

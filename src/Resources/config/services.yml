@@ -8,6 +8,15 @@ services:
             - { name: contao.callback, table: tl_content, target: config.onsubmit }
             - { name: contao.callback, table: tl_content, target: fields.twitter_url.save }
 
+    terminal42_oembed.listener.instagram_element:
+        class: Terminal42\OEmbedBundle\EventListener\DataContainer\InstagramElementListener
+        arguments:
+            - '@database_connection'
+            - '@logger'
+        tags:
+            - { name: contao.callback, table: tl_content, target: config.onsubmit }
+            - { name: contao.callback, table: tl_content, target: fields.instagram_url.save }
+
     terminal42_oembed.controller.tweet:
         class: Terminal42\OEmbedBundle\Controller\OEmbedController
         tags:
@@ -17,3 +26,8 @@ services:
         class: Terminal42\OEmbedBundle\Controller\OEmbedController
         tags:
             - { name: contao.content_element, type: user_timline, category: twitter }
+
+    terminal42_oembed.controller.instragram_post:
+        class: Terminal42\OEmbedBundle\Controller\OEmbedController
+        tags:
+            - { name: contao.content_element, type: embedded_instagram_post, category: instragram }
