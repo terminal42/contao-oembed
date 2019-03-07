@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.1">
+    <file datatype="php" original="src/Resources/contao/languages/en/default.php" source-language="en" target-language="de">
+        <body>
+            <trans-unit id="ERR.twitter_url">
+                <source>Invalid Twitter URL (HTTP Status %s)</source>
+                <target>Ungültige Twitter-URL (HTTP Status %s)</target>
+            </trans-unit>
+            <trans-unit id="ERR.instagram_url">
+                <source>Invalid Instagram URL (HTTP Status %s)</source>
+                <target>Ungültige Instagram-URL (HTTP Status %s)</target>
+            </trans-unit>
+            <trans-unit id="CTE.embedded_tweet">
+                <source>Embedded Tweet</source>
+                <target>Tweet</target>
+            </trans-unit>
+            <trans-unit id="CTE.user_timeline">
+                <source>User Timeline</source>
+                <target>Twitter Nutzer-Timeline</target>
+            </trans-unit>
+            <trans-unit id="CTE.embedded_instagram_post">
+                <source>Embedded Instagram post</source>
+                <target>Instagram Post</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

@@ -1,66 +1,86 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.1">
-    <file datatype="php" original="src/Resources/contao/languages/en/tl_content.php" source-language="en">
+    <file datatype="php" original="src/Resources/contao/languages/en/tl_content.php" source-language="en" target-language="de">
         <body>
             <trans-unit id="tl_content.twitter_url.0">
                 <source>Twitter URL</source>
+                <target>Twitter-URL</target>
             </trans-unit>
             <trans-unit id="tl_content.twitter_url.1">
                 <source>Please enter an URL of a tweet.</source>
+                <target>Bitte geben Sie die URL vom Tweet ein.</target>
             </trans-unit>
             <trans-unit id="tl_content.twitter_cards.0">
                 <source>Show Cards</source>
+                <target>Cards anzeigen</target>
             </trans-unit>
             <trans-unit id="tl_content.twitter_cards.1">
                 <source>When disabled, links in a Tweet are not expanded to photo, video, or link previews.</source>
+                <target>Wenn deaktiviert werden Tweets ohne Foto, Video oder Link-Vorschau angezeigt.</target>
             </trans-unit>
             <trans-unit id="tl_content.twitter_conversation.0">
                 <source>Show Conversation</source>
+                <target>Konversation anzeigen</target>
             </trans-unit>
             <trans-unit id="tl_content.twitter_conversation.1">
                 <source>When disabled, only the cited Tweet will be displayed even if it is in reply to another Tweet.</source>
+                <target>Wenn deaktiviert wird nur der verlinkte Tweet angezeigt, auch wenn der Tweet z.B. eine Antwort auf einen anderen Tweet ist.</target>
             </trans-unit>
             <trans-unit id="tl_content.twitter_theme.0">
                 <source>Theme</source>
+                <target>Theme</target>
             </trans-unit>
             <trans-unit id="tl_content.twitter_theme.1">
                 <source>When set to <i>Dark</i>, displays Tweet with light text over a dark background.</source>
+                <target>Bei dem Theme <i>Dunkel</i> wird der Tweet mit einer hellen Schrift auf dunklem Hintergrund dargestellt.</target>
             </trans-unit>
             <trans-unit id="tl_content.twitter_theme.light">
                 <source>Light</source>
+                <target>Hell</target>
             </trans-unit>
             <trans-unit id="tl_content.twitter_theme.dark">
                 <source>Dark</source>
+                <target>Dunkel</target>
             </trans-unit>
             <trans-unit id="tl_content.twitter_limit.0">
                 <source>Number of items</source>
+                <target>Anzahl Elemente</target>
             </trans-unit>
             <trans-unit id="tl_content.twitter_limit.1">
                 <source>Display up to N items where N is a value between 1 and 20 inclusive.</source>
+                <target>Zeige bis zu N Elemente an, wobei N mindestens 1 und maximal 20 ist.</target>
             </trans-unit>
             <trans-unit id="tl_content.twitter_chrome.0">
                 <source>Display configuration</source>
+                <target>Konfiguration anzeigen</target>
             </trans-unit>
             <trans-unit id="tl_content.twitter_chrome.1">
                 <source>Configure how the Twitter output should look like.</source>
+                <target>Konfiguriere, wie die Twitter-Ausgabe aussehen soll.</target>
             </trans-unit>
             <trans-unit id="tl_content.instagram_url.0">
                 <source>Instagram URL</source>
+                <target>Instagram-URL</target>
             </trans-unit>
             <trans-unit id="tl_content.instagram_url.1">
                 <source>The URL to the Instagram post like <em>http://instagr.am/p/fA9uwTtkSN/</em>.</source>
+                <target>Die URL zum Instagram post, z.B. <em>http://instagr.am/p/fA9uwTtkSN/</em>.</target>
             </trans-unit>
             <trans-unit id="tl_content.instagram_maxwidth.0">
                 <source>Maximum width</source>
+                <target>Maximale Breite</target>
             </trans-unit>
             <trans-unit id="tl_content.instagram_maxwidth.1">
                 <source>Provide the maximum width of returned media (must be greater than 320).</source>
+                <target>Die maximale Breite des Bildes/Videos (muss größer als 320 sein).</target>
             </trans-unit>
             <trans-unit id="tl_content.instagram_hidecaption.0">
                 <source>Hide caption</source>
+                <target>Bildunterschrift nicht anzeigen</target>
             </trans-unit>
             <trans-unit id="tl_content.instagram_hidecaption.1">
                 <source>If set to true, the embed code hides the caption.</source>
+                <target>Wenn aktiviert wird die Bildunterschrift des Posts nicht angezeigt.</target>
             </trans-unit>
         </body>
     </file>
