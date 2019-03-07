@@ -22,10 +22,10 @@ services:
         tags:
             - { name: contao.content_element, type: embedded_tweet, category: media }
 
-    terminal42_oembed.controller.user_timline:
+    terminal42_oembed.controller.user_timeline:
         class: Terminal42\OEmbedBundle\Controller\OEmbedController
         tags:
-            - { name: contao.content_element, type: user_timline, category: media }
+            - { name: contao.content_element, type: user_timeline, category: media }
 
     terminal42_oembed.controller.instragram_post:
         class: Terminal42\OEmbedBundle\Controller\OEmbedController

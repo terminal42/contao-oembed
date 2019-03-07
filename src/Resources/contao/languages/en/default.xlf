@@ -11,7 +11,7 @@
             <trans-unit id="CTE.embedded_tweet">
                 <source>Embedded Tweet</source>
             </trans-unit>
-            <trans-unit id="CTE.user_timline">
+            <trans-unit id="CTE.user_timeline">
                 <source>User Timeline</source>
             </trans-unit>
             <trans-unit id="CTE.embedded_instagram_post">
