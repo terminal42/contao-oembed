@@ -100,10 +100,8 @@ class InstagramElementListener
     private function prepareQuery($data): array
     {
         $query = [
-            'url'         => $data->instagram_url,
-            'maxwidth'    => null,
-            'hidecaption' => false,
-            'omitscript'  => '1',
+            'url'        => $data->instagram_url,
+            'omitscript' => '1',
         ];
 
         if ($data->instagram_maxwidth) {
