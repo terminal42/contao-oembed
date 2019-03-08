@@ -3,6 +3,7 @@
 namespace Terminal42\OEmbedBundle\EventListener\DataContainer;
 
 use Contao\DataContainer;
+use Contao\StringUtil;
 use Doctrine\DBAL\Connection;
 use Http\Client\HttpClient;
 use Http\Discovery\HttpClientDiscovery;
@@ -40,7 +41,7 @@ class TwitterElementListener
     /**
      * Constructor.
      *
-     * @param Connection          $db
+     * @param Connection          $database
      * @param LoggerInterface     $logger
      * @param HttpClient|null     $httpClient
      * @param MessageFactory|null $messageFactory
@@ -72,11 +73,11 @@ class TwitterElementListener
         return $value;
     }
 
-    public function onSubmitCallback(DataContainer $dc)
+    public function onSubmitCallback(DataContainer $dc): void
     {
         if (!$dc->activeRecord
-            || !in_array($dc->activeRecord->type, ['embedded_tweet', 'user_timeline'])
             || '' === $dc->activeRecord->twitter_url
+            || !in_array($dc->activeRecord->type, ['embedded_tweet', 'user_timeline'])
         ) {
             return;
         }
@@ -98,7 +99,7 @@ class TwitterElementListener
         }
     }
 
-    private function prepareQueryForType($type, $data)
+    private function prepareQueryForType($type, $data): array
     {
         $query = [
             'url'         => $data->twitter_url,
@@ -124,7 +125,7 @@ class TwitterElementListener
                 $query['limit'] = $data->twitter_limit;
             }
 
-            if (!empty($chrome = deserialize($data->twitter_chrome))) {
+            if (!empty($chrome = StringUtil::deserialize($data->twitter_chrome))) {
                 $query['chrome'] = implode(' ', $chrome);
             }
 
@@ -144,12 +145,12 @@ class TwitterElementListener
     private function getHtmlForQuery(array $query)
     {
         ksort($query, SORT_STRING);
-        $query = http_build_query($query);
-        $hash = md5($query);
+        $parsedQuery = http_build_query($query);
+        $hash = md5($parsedQuery);
 
         if (!isset($this->responseCache[$hash])) {
             $response = $this->httpClient->sendRequest(
-                $this->requestFactory->createRequest('GET', 'https://publish.twitter.com/oembed?' . $query)
+                $this->requestFactory->createRequest('GET', 'https://publish.twitter.com/oembed?' . $parsedQuery)
             );
 
             if (($status = $response->getStatusCode()) < 200 || $status >= 300) {

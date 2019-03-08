@@ -54,7 +54,7 @@ class InstagramElementListener
         $this->requestFactory = $messageFactory ?: MessageFactoryDiscovery::find();
     }
 
-    public function onSaveCallback($value, DataContainer $dc)
+    public function onSaveCallback($value)
     {
         try {
             $this->getHtmlForQuery($this->prepareQuery(
