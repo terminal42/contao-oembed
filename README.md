@@ -8,16 +8,13 @@ A Contao 4 bundle that provides several oEmbed widgets (Twitter, Instagram) for 
 
 This bundle provides content elements that can be added to your website.
 
-### Single Tweet
-
+1. Single Tweet  
 A new content element to embed a single tweet.
 
-### Twitter user timeline
-
+2. Twitter user timeline   
 A new content element to embed a user's timeline.
 
-### Instagram post
-
+3. Instagram post  
 Embed an Instagram post into your website.
 
 ## How does it work?
