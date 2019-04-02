@@ -10,15 +10,15 @@
                 <source>Invalid Instagram URL (HTTP Status %s)</source>
                 <target>Ungültige Instagram-URL (HTTP Status %s)</target>
             </trans-unit>
-            <trans-unit id="CTE.embedded_tweet">
+            <trans-unit id="CTE.embedded_tweet.0">
                 <source>Embedded Tweet</source>
                 <target>Tweet</target>
             </trans-unit>
-            <trans-unit id="CTE.user_timeline">
+            <trans-unit id="CTE.user_timeline.0">
                 <source>User Timeline</source>
                 <target>Twitter Nutzer-Timeline</target>
             </trans-unit>
-            <trans-unit id="CTE.embedded_instagram_post">
+            <trans-unit id="CTE.embedded_instagram_post.0">
                 <source>Embedded Instagram post</source>
                 <target>Instagram Post</target>
             </trans-unit>
