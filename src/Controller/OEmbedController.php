@@ -16,8 +16,9 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class OEmbedController extends AbstractContentElementController
 {
-    protected function getResponse(Template $template, ContentModel $model, Request $request): Response
+    protected function getResponse(Template $template, ContentModel $model, Request $request): ?Response
     {
-        return new Response($template->parse());
+        // Let Contao render the template
+        return null;
     }
 }

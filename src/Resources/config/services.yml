@@ -3,5 +3,5 @@ services:
         autoconfigure: true
         autowire: true
 
-    Terminal42\OembeddBundle\:
+    Terminal42\OEmbedBundle\:
         resource: ../../{Controller,EventListener}
