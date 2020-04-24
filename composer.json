@@ -1,6 +1,7 @@
 {
     "name": "terminal42/contao-oembed",
-    "description": "Various oEmbed elements for Contao CMS",
+    "description": "Embed a Tweet, a Twitter Timeline or an Instagram Post on your Contao website.",
+    "keywords": ["twitter", "tweet", "timeline", "instagram post", "embed"],
     "type": "contao-bundle",
     "license": "MIT",
     "authors": [
