@@ -1,7 +1,8 @@
 <?php
 
-namespace Terminal42\OEmbedBundle\EventListener\DataContainer;
+namespace Terminal42\OEmbedBundle\EventListener;
 
+use Contao\CoreBundle\ServiceAnnotation\Callback;
 use Contao\DataContainer;
 use Doctrine\DBAL\Connection;
 use Http\Client\HttpClient;
@@ -54,6 +55,9 @@ class InstagramElementListener
         $this->requestFactory = $messageFactory ?: MessageFactoryDiscovery::find();
     }
 
+    /**
+     * @Callback(table="tl_content", target="fields.instagram_url.save")
+     */
     public function onSaveCallback($value)
     {
         try {
@@ -71,6 +75,9 @@ class InstagramElementListener
         return $value;
     }
 
+    /**
+     * @Callback(table="tl_content", target="config.onsubmit")
+     */
     public function onSubmitCallback(DataContainer $dc): void
     {
         if (!$dc->activeRecord

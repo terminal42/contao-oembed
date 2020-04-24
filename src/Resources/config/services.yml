@@ -1,33 +1,7 @@
 services:
-    terminal42_oembed.listener.twitter_element:
-        class: Terminal42\OEmbedBundle\EventListener\DataContainer\TwitterElementListener
-        arguments:
-            - '@database_connection'
-            - '@logger'
-        tags:
-            - { name: contao.callback, table: tl_content, target: config.onsubmit }
-            - { name: contao.callback, table: tl_content, target: fields.twitter_url.save }
+    _defaults:
+        autoconfigure: true
+        autowire: true
 
-    terminal42_oembed.listener.instagram_element:
-        class: Terminal42\OEmbedBundle\EventListener\DataContainer\InstagramElementListener
-        arguments:
-            - '@database_connection'
-            - '@logger'
-        tags:
-            - { name: contao.callback, table: tl_content, target: config.onsubmit }
-            - { name: contao.callback, table: tl_content, target: fields.instagram_url.save }
-
-    terminal42_oembed.controller.tweet:
-        class: Terminal42\OEmbedBundle\Controller\OEmbedController
-        tags:
-            - { name: contao.content_element, type: embedded_tweet, category: media }
-
-    terminal42_oembed.controller.user_timeline:
-        class: Terminal42\OEmbedBundle\Controller\OEmbedController
-        tags:
-            - { name: contao.content_element, type: user_timeline, category: media }
-
-    terminal42_oembed.controller.instragram_post:
-        class: Terminal42\OEmbedBundle\Controller\OEmbedController
-        tags:
-            - { name: contao.content_element, type: embedded_instagram_post, category: media }
+    Terminal42\OembeddBundle\:
+        resource: ../../{Controller,EventListener}
