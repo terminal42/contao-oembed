@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Terminal42\OEmbedBundle\EventListener;
 
 use Contao\CoreBundle\ServiceAnnotation\Callback;
@@ -14,39 +16,12 @@ use Psr\Log\LoggerInterface;
 
 class TwitterElementListener
 {
-    /**
-     * @var Connection
-     */
-    private $database;
+    private Connection $database;
+    private ?LoggerInterface $logger;
+    private ?HttpClient $httpClient;
+    private MessageFactory $requestFactory;
+    private array $responseCache;
 
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /**
-     * @var HttpClient|null
-     */
-    private $httpClient;
-
-    /**
-     * @var MessageFactory
-     */
-    private $requestFactory;
-
-    /**
-     * @var array
-     */
-    private $responseCache;
-
-    /**
-     * Constructor.
-     *
-     * @param Connection          $database
-     * @param LoggerInterface     $logger
-     * @param HttpClient|null     $httpClient
-     * @param MessageFactory|null $messageFactory
-     */
     public function __construct(Connection $database, LoggerInterface $logger = null, HttpClient $httpClient = null, MessageFactory $messageFactory = null)
     {
         $this->database = $database;
@@ -82,9 +57,10 @@ class TwitterElementListener
      */
     public function onSubmitCallback(DataContainer $dc): void
     {
-        if (!$dc->activeRecord
+        if (
+            !$dc->activeRecord
             || '' === $dc->activeRecord->twitter_url
-            || !in_array($dc->activeRecord->type, ['embedded_tweet', 'user_timeline'])
+            || !\in_array($dc->activeRecord->type, ['embedded_tweet', 'user_timeline'], true)
         ) {
             return;
         }
@@ -109,10 +85,10 @@ class TwitterElementListener
     private function prepareQueryForType($type, $data): array
     {
         $query = [
-            'url'         => $data->twitter_url,
+            'url' => $data->twitter_url,
             'omit_script' => true,
             'aria_polite' => 'assertive',
-            'dnt'         => true,
+            'dnt' => true,
         ];
 
         if ($data->twitter_theme) {
@@ -135,7 +111,6 @@ class TwitterElementListener
             if (!empty($chrome = StringUtil::deserialize($data->twitter_chrome))) {
                 $query['chrome'] = implode(' ', $chrome);
             }
-
         } else {
             throw new \InvalidArgumentException(sprintf('Unknown element type "%s"', $type));
         }
@@ -144,10 +119,9 @@ class TwitterElementListener
     }
 
     /**
-     * @param array $query
+     * @throws \Exception
      *
      * @return string
-     * @throws \Exception
      */
     private function getHtmlForQuery(array $query)
     {
@@ -157,11 +131,11 @@ class TwitterElementListener
 
         if (!isset($this->responseCache[$hash])) {
             $response = $this->httpClient->sendRequest(
-                $this->requestFactory->createRequest('GET', 'https://publish.twitter.com/oembed?' . $parsedQuery)
+                $this->requestFactory->createRequest('GET', 'https://publish.twitter.com/oembed?'.$parsedQuery)
             );
 
             if (($status = $response->getStatusCode()) < 200 || $status >= 300) {
-                throw new \RuntimeException('Invalid Twitter response: ' . $response->getBody(), $status);
+                throw new \RuntimeException('Invalid Twitter response: '.$response->getBody(), $status);
             }
 
             $json = json_decode((string) $response->getBody(), true);

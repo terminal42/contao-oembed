@@ -42,5 +42,10 @@
     },
     "extra": {
         "contao-manager-plugin": "Terminal42\\OEmbedBundle\\ContaoManager\\Plugin"
+    },
+    "scripts": {
+        "cs-fixer": [
+            "vendor/bin/ecs check src/ --fix --ansi"
+        ]
     }
 }

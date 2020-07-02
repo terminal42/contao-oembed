@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Terminal42\OEmbedBundle\EventListener;
 
 use Contao\CoreBundle\ServiceAnnotation\Callback;
@@ -13,39 +15,12 @@ use Psr\Log\LoggerInterface;
 
 class InstagramElementListener
 {
-    /**
-     * @var Connection
-     */
-    private $database;
+    private Connection $database;
+    private ?LoggerInterface $logger;
+    private ?HttpClient $httpClient;
+    private MessageFactory $requestFactory;
+    private array $responseCache;
 
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /**
-     * @var HttpClient|null
-     */
-    private $httpClient;
-
-    /**
-     * @var MessageFactory
-     */
-    private $requestFactory;
-
-    /**
-     * @var array
-     */
-    private $responseCache;
-
-    /**
-     * Constructor.
-     *
-     * @param Connection          $database
-     * @param LoggerInterface     $logger
-     * @param HttpClient|null     $httpClient
-     * @param MessageFactory|null $messageFactory
-     */
     public function __construct(Connection $database, LoggerInterface $logger = null, HttpClient $httpClient = null, MessageFactory $messageFactory = null)
     {
         $this->database = $database;
@@ -80,7 +55,8 @@ class InstagramElementListener
      */
     public function onSubmitCallback(DataContainer $dc): void
     {
-        if (!$dc->activeRecord
+        if (
+            !$dc->activeRecord
             || 'embedded_instagram_post' !== $dc->activeRecord->type
             || '' === $dc->activeRecord->instagram_url
         ) {
@@ -107,7 +83,7 @@ class InstagramElementListener
     private function prepareQuery($data): array
     {
         $query = [
-            'url'        => $data->instagram_url,
+            'url' => $data->instagram_url,
             'omitscript' => '1',
         ];
 
@@ -123,9 +99,6 @@ class InstagramElementListener
     }
 
     /**
-     * @param array $query
-     *
-     * @return string
      * @throws \Exception
      */
     private function getHtmlForQuery(array $query): string
@@ -135,11 +108,11 @@ class InstagramElementListener
 
         if (!isset($this->responseCache[$hash])) {
             $response = $this->httpClient->sendRequest(
-                $this->requestFactory->createRequest('GET', 'https://api.instagram.com/oembed/?' . $parsedQuery)
+                $this->requestFactory->createRequest('GET', 'https://api.instagram.com/oembed/?'.$parsedQuery)
             );
 
             if (($status = $response->getStatusCode()) < 200 || $status > 301) {
-                throw new \RuntimeException('Invalid Instagram response: ' . $response->getBody(), $status);
+                throw new \RuntimeException('Invalid Instagram response: '.$response->getBody(), $status);
             }
 
             $json = json_decode((string) $response->getBody(), true);

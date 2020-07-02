@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Terminal42\OEmbedBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
@@ -9,12 +11,9 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 class Terminal42OEmbedExtension extends Extension
 {
-    /**
-     * @inheritdoc
-     */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
         $loader->load('services.yml');
     }

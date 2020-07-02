@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Terminal42\OEmbedBundle\ContaoManager;
 
 use Contao\CoreBundle\ContaoCoreBundle;
@@ -10,13 +12,10 @@ use Terminal42\OEmbedBundle\Terminal42OEmbedBundle;
 
 class Plugin implements BundlePluginInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getBundles(ParserInterface $parser)
     {
         return [
-            (new BundleConfig(Terminal42OEmbedBundle::class))->setLoadAfter([ContaoCoreBundle::class])
+            (new BundleConfig(Terminal42OEmbedBundle::class))->setLoadAfter([ContaoCoreBundle::class]),
         ];
     }
 }
