@@ -10,6 +10,12 @@
             "homepage":"http://www.terminal42.ch"
         }
     ],
+    "funding": [
+        {
+            "type": "github",
+            "url": "https://github.com/terminal42"
+        }
+    ],
     "require":{
         "php":"^7.2",
         "ext-json": "*",
