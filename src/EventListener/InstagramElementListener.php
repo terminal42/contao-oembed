@@ -12,8 +12,9 @@ use Http\Discovery\HttpClientDiscovery;
 use Http\Discovery\MessageFactoryDiscovery;
 use Http\Message\MessageFactory;
 use Psr\Log\LoggerInterface;
+use Terminal42\ServiceAnnotationBundle\ServiceAnnotationInterface;
 
-class InstagramElementListener
+class InstagramElementListener implements ServiceAnnotationInterface
 {
     private Connection $database;
     private ?LoggerInterface $logger;
