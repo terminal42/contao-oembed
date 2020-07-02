@@ -4,4 +4,4 @@ services:
         autowire: true
 
     Terminal42\OEmbedBundle\:
-        resource: ../../{Controller,EventListener}
+        resource: ../src/{Controller,EventListener}
