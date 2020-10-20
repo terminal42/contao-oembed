@@ -30,7 +30,7 @@
     },
     "require-dev": {
         "contao/manager-plugin": "^2.0",
-        "contao/easy-coding-standard": "^1.0"
+        "contao/easy-coding-standard": "^3.0"
     },
     "conflict": {
         "contao/manager-plugin": "<2.0 || >=3.0"
