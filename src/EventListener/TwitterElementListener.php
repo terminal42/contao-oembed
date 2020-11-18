@@ -8,28 +8,21 @@ use Contao\CoreBundle\ServiceAnnotation\Callback;
 use Contao\DataContainer;
 use Contao\StringUtil;
 use Doctrine\DBAL\Connection;
-use Http\Client\HttpClient;
-use Http\Discovery\HttpClientDiscovery;
-use Http\Discovery\MessageFactoryDiscovery;
-use Http\Message\MessageFactory;
 use Psr\Log\LoggerInterface;
-use Terminal42\ServiceAnnotationBundle\ServiceAnnotationInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-class TwitterElementListener implements ServiceAnnotationInterface
+class TwitterElementListener
 {
     private Connection $database;
+    private HttpClientInterface $httpClient;
     private ?LoggerInterface $logger;
-    private ?HttpClient $httpClient;
-    private MessageFactory $requestFactory;
     private array $responseCache;
 
-    public function __construct(Connection $database, LoggerInterface $logger = null, HttpClient $httpClient = null, MessageFactory $messageFactory = null)
+    public function __construct(Connection $database, HttpClientInterface $httpClient, LoggerInterface $logger = null)
     {
         $this->database = $database;
+        $this->httpClient = $httpClient;
         $this->logger = $logger;
-
-        $this->httpClient = $httpClient ?: HttpClientDiscovery::find();
-        $this->requestFactory = $messageFactory ?: MessageFactoryDiscovery::find();
     }
 
     /**
@@ -131,17 +124,16 @@ class TwitterElementListener implements ServiceAnnotationInterface
         $hash = md5($parsedQuery);
 
         if (!isset($this->responseCache[$hash])) {
-            $response = $this->httpClient->sendRequest(
-                $this->requestFactory->createRequest('GET', 'https://publish.twitter.com/oembed?'.$parsedQuery)
+            $response = $this->httpClient->request(
+                'GET',
+                'https://publish.twitter.com/oembed?'.$parsedQuery
             );
 
             if (($status = $response->getStatusCode()) < 200 || $status >= 300) {
-                throw new \RuntimeException('Invalid Twitter response: '.$response->getBody(), $status);
+                throw new \RuntimeException('Invalid Twitter response: '.$response->getContent(), $status);
             }
 
-            $json = json_decode((string) $response->getBody(), true);
-
-            $this->responseCache[$hash] = $json['html'];
+            $this->responseCache[$hash] = $response->toArray()['html'];
         }
 
         return $this->responseCache[$hash];

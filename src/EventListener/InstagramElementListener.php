@@ -7,28 +7,21 @@ namespace Terminal42\OEmbedBundle\EventListener;
 use Contao\CoreBundle\ServiceAnnotation\Callback;
 use Contao\DataContainer;
 use Doctrine\DBAL\Connection;
-use Http\Client\HttpClient;
-use Http\Discovery\HttpClientDiscovery;
-use Http\Discovery\MessageFactoryDiscovery;
-use Http\Message\MessageFactory;
 use Psr\Log\LoggerInterface;
-use Terminal42\ServiceAnnotationBundle\ServiceAnnotationInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-class InstagramElementListener implements ServiceAnnotationInterface
+class InstagramElementListener
 {
     private Connection $database;
+    private HttpClientInterface $httpClient;
     private ?LoggerInterface $logger;
-    private ?HttpClient $httpClient;
-    private MessageFactory $requestFactory;
     private array $responseCache;
 
-    public function __construct(Connection $database, LoggerInterface $logger = null, HttpClient $httpClient = null, MessageFactory $messageFactory = null)
+    public function __construct(Connection $database, HttpClientInterface $httpClient, LoggerInterface $logger = null)
     {
         $this->database = $database;
+        $this->httpClient = $httpClient;
         $this->logger = $logger;
-
-        $this->httpClient = $httpClient ?: HttpClientDiscovery::find();
-        $this->requestFactory = $messageFactory ?: MessageFactoryDiscovery::find();
     }
 
     /**
@@ -108,17 +101,16 @@ class InstagramElementListener implements ServiceAnnotationInterface
         $hash = md5($parsedQuery);
 
         if (!isset($this->responseCache[$hash])) {
-            $response = $this->httpClient->sendRequest(
-                $this->requestFactory->createRequest('GET', 'https://api.instagram.com/oembed/?'.$parsedQuery)
+            $response = $this->httpClient->request(
+                'GET',
+                'https://api.instagram.com/oembed/?'.$parsedQuery
             );
 
             if (($status = $response->getStatusCode()) < 200 || $status > 301) {
-                throw new \RuntimeException('Invalid Instagram response: '.$response->getBody(), $status);
+                throw new \RuntimeException('Invalid Instagram response: '.$response->getContent(), $status);
             }
 
-            $json = json_decode((string) $response->getBody(), true);
-
-            $this->responseCache[$hash] = $json['html'];
+            $this->responseCache[$hash] = $response->toArray()['html'];
         }
 
         return $this->responseCache[$hash];
