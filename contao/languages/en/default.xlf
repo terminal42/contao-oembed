@@ -8,6 +8,9 @@
             <trans-unit id="ERR.instagram_url">
                 <source>Invalid Instagram URL (HTTP Status %s)</source>
             </trans-unit>
+            <trans-unit id="ERR.facebook_url">
+                <source>Invalid Facebook URL (HTTP Status %s)</source>
+            </trans-unit>
             <trans-unit id="CTE.embedded_tweet.0">
                 <source>Embedded Tweet</source>
             </trans-unit>
@@ -16,6 +19,9 @@
             </trans-unit>
             <trans-unit id="CTE.embedded_instagram_post.0">
                 <source>Embedded Instagram post</source>
+            </trans-unit>
+            <trans-unit id="CTE.oembed_facebook.0">
+                <source>Embedded Facebook post/page/video</source>
             </trans-unit>
         </body>
     </file>

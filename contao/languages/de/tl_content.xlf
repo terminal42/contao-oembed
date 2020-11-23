@@ -82,6 +82,14 @@
                 <source>If set to true, the embed code hides the caption.</source>
                 <target>Wenn aktiviert wird die Bildunterschrift des Posts nicht angezeigt.</target>
             </trans-unit>
+            <trans-unit id="tl_content.facebook_url.0">
+                <source>Facebook URL</source>
+                <target>Facebook-URL</target>
+            </trans-unit>
+            <trans-unit id="tl_content.facebook_url.1">
+                <source>The URL to the Facebook post, page or video.</source>
+                <target>Die URL zu einem Post, einer Seite oder einem Video auf Facebook.</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

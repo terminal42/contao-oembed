@@ -62,6 +62,12 @@
             <trans-unit id="tl_content.instagram_hidecaption.1">
                 <source>If set to true, the embed code hides the caption.</source>
             </trans-unit>
+            <trans-unit id="tl_content.facebook_url.0">
+                <source>Facebook URL</source>
+            </trans-unit>
+            <trans-unit id="tl_content.facebook_url.1">
+                <source>The URL to the Facebook post, page or video.</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>
