@@ -2,6 +2,8 @@ services:
     _defaults:
         autoconfigure: true
         autowire: true
+        bind:
+            $facebookToken: '%terminal42_oembed.facebook_token%'
 
     Terminal42\OEmbedBundle\:
         resource: ../src/{Controller,EventListener}

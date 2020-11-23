@@ -4,4 +4,3 @@
 <?php $this->block('content'); ?>
 <?= $this->html ?>
 <?php $this->endblock(); ?>
-

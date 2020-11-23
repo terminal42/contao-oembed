@@ -14,13 +14,15 @@ class InstagramElementListener
 {
     private Connection $database;
     private HttpClientInterface $httpClient;
+    private string $facebookToken;
     private ?LoggerInterface $logger;
     private array $responseCache;
 
-    public function __construct(Connection $database, HttpClientInterface $httpClient, LoggerInterface $logger = null)
+    public function __construct(Connection $database, HttpClientInterface $httpClient, string $facebookToken, LoggerInterface $logger = null)
     {
         $this->database = $database;
         $this->httpClient = $httpClient;
+        $this->facebookToken = $facebookToken;
         $this->logger = $logger;
     }
 
@@ -103,7 +105,12 @@ class InstagramElementListener
         if (!isset($this->responseCache[$hash])) {
             $response = $this->httpClient->request(
                 'GET',
-                'https://api.instagram.com/oembed/?'.$parsedQuery
+                'https://graph.facebook.com/v9.0/instagram_oembed?'.$parsedQuery,
+                [
+                    'headers' => [
+                        'Authorization' => 'Bearer '.$this->facebookToken
+                    ]
+                ]
             );
 
             if (($status = $response->getStatusCode()) < 200 || $status > 301) {
