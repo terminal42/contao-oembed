@@ -21,4 +21,9 @@ class Terminal42OEmbedExtension extends Extension
 
         $container->setParameter('terminal42_oembed.facebook_token', $config['facebook_token']);
     }
+
+    public function getAlias(): string
+    {
+        return 'terminal42_oembed';
+    }
 }
