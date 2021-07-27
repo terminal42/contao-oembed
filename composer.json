@@ -4,18 +4,22 @@
     "keywords": ["twitter", "tweet", "timeline", "instagram post", "embed"],
     "type": "contao-bundle",
     "license": "MIT",
-    "authors": [{
-        "name": "terminal42 gmbh",
-        "homepage":"http://www.terminal42.ch"
-    }],
-    "funding": [{
-        "type": "github",
-        "url": "https://github.com/terminal42"
-    }],
-    "require":{
-        "php":"^7.2",
+    "authors": [
+        {
+            "name": "terminal42 gmbh",
+            "homepage": "http://www.terminal42.ch"
+        }
+    ],
+    "funding": [
+        {
+            "type": "github",
+            "url": "https://github.com/terminal42"
+        }
+    ],
+    "require": {
+        "php": "^7.2 || ^8.0",
         "ext-json": "*",
-        "contao/core-bundle":"^4.9",
+        "contao/core-bundle": "^4.9",
         "symfony/http-client": "^4.4 || ^5.0",
         "psr/log": "^1.0"
     },
@@ -26,7 +30,7 @@
     "conflict": {
         "contao/manager-plugin": "<2.0 || >=3.0"
     },
-    "autoload":{
+    "autoload": {
         "psr-4": {
             "Terminal42\\OEmbedBundle\\": "src/"
         }
