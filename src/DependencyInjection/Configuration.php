@@ -15,10 +15,10 @@ final class Configuration implements ConfigurationInterface
         $treeBuilder
             ->getRootNode()
             ->children()
-                ->scalarNode('facebook_token')
-                    ->defaultValue('144465555597023|5fe9265371e3f65dbf07738a1a6920a1')
-                    ->info('Access token for Facebook Graph API')
-                ->end()
+            ->scalarNode('facebook_token')
+            ->defaultValue('144465555597023|5fe9265371e3f65dbf07738a1a6920a1')
+            ->info('Access token for Facebook Graph API')
+            ->end()
             ->end()
         ;
 

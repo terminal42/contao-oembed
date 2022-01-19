@@ -83,8 +83,8 @@ class FacebookElementListener
                 $this->getApiEndpointForUrl($url).'?omitscript=true&url='.$url,
                 [
                     'headers' => [
-                        'Authorization' => 'Bearer '.$this->facebookToken
-                    ]
+                        'Authorization' => 'Bearer '.$this->facebookToken,
+                    ],
                 ]
             );
 

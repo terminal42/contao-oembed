@@ -22,6 +22,6 @@ class OEmbedController extends AbstractContentElementController
     protected function getResponse(Template $template, ContentModel $model, Request $request): ?Response
     {
         // Let Contao render the template
-        return null;
+        return $template->getResponse();
     }
 }
