@@ -13,7 +13,6 @@ $GLOBALS['TL_DCA']['tl_content']['palettes']['oembed_facebook'] = '{type_legend}
  * Fields
  */
 $GLOBALS['TL_DCA']['tl_content']['fields']['twitter_url'] = [
-    'label'     => &$GLOBALS['TL_LANG']['tl_content']['twitter_url'],
     'exclude'   => true,
     'inputType' => 'text',
     'eval'      => ['mandatory' => true, 'maxlength' => 255, 'tl_class' => 'w50'],
@@ -21,7 +20,6 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['twitter_url'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['twitter_theme'] = [
-    'label'     => &$GLOBALS['TL_LANG']['tl_content']['twitter_theme'],
     'exclude'   => true,
     'default'   => 'light',
     'inputType' => 'radio',
@@ -32,7 +30,6 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['twitter_theme'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['twitter_cards'] = [
-    'label'     => &$GLOBALS['TL_LANG']['tl_content']['twitter_cards'],
     'exclude'   => true,
     'inputType' => 'checkbox',
     'eval'      => ['tl_class' => 'w50'],
@@ -40,7 +37,6 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['twitter_cards'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['twitter_conversation'] = [
-    'label'     => &$GLOBALS['TL_LANG']['tl_content']['twitter_conversation'],
     'exclude'   => true,
     'inputType' => 'checkbox',
     'eval'      => ['tl_class' => 'w50'],
@@ -48,7 +44,6 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['twitter_conversation'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['twitter_limit'] = [
-    'label'     => &$GLOBALS['TL_LANG']['tl_content']['twitter_limit'],
     'exclude'   => true,
     'inputType' => 'text',
     'eval'      => ['mandatory' => true, 'tl_class' => 'w50'],
@@ -56,7 +51,6 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['twitter_limit'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['twitter_chrome'] = [
-    'label'     => &$GLOBALS['TL_LANG']['tl_content']['twitter_chrome'],
     'exclude'   => true,
     'inputType' => 'checkbox',
     'options'   => ['noheader', 'nofooter', 'noborders', 'noscrollbar', 'transparent'],
@@ -65,7 +59,6 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['twitter_chrome'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['instagram_url'] = [
-    'label'     => &$GLOBALS['TL_LANG']['tl_content']['instagram_url'],
     'exclude'   => true,
     'inputType' => 'text',
     'eval'      => ['mandatory' => true, 'maxlength' => 255, 'tl_class' => 'w50'],
@@ -73,7 +66,6 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['instagram_url'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['instagram_maxwidth'] = [
-    'label'     => &$GLOBALS['TL_LANG']['tl_content']['instagram_maxwidth'],
     'exclude'   => true,
     'inputType' => 'text',
     'eval'      => ['maxlength' => 64, 'tl_class' => 'w50', 'rgpxp' => 'natural'],
@@ -81,7 +73,6 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['instagram_maxwidth'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['instagram_hidecaption'] = [
-    'label'     => &$GLOBALS['TL_LANG']['tl_content']['instagram_hidecaption'],
     'exclude'   => true,
     'inputType' => 'checkbox',
     'eval'      => ['tl_class' => 'w50 m12'],
@@ -89,7 +80,6 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['instagram_hidecaption'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['facebook_url'] = [
-    'label'     => &$GLOBALS['TL_LANG']['tl_content']['facebook_url'],
     'exclude'   => true,
     'inputType' => 'text',
     'eval'      => ['mandatory' => true, 'maxlength' => 255, 'tl_class' => 'w50'],
