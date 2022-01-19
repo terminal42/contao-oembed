@@ -16,7 +16,7 @@ class TwitterElementListener
     private Connection $database;
     private HttpClientInterface $httpClient;
     private ?LoggerInterface $logger;
-    private array $responseCache;
+    private array $responseCache = [];
 
     public function __construct(Connection $database, HttpClientInterface $httpClient, LoggerInterface $logger = null)
     {
