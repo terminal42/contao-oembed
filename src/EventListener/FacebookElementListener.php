@@ -89,7 +89,7 @@ class FacebookElementListener
             );
 
             if (($status = $response->getStatusCode()) < 200 || $status > 301) {
-                throw new \RuntimeException('Invalid Facebook response: '.$response->getContent(), $status);
+                throw new \RuntimeException('Invalid Facebook response: '.$response->getContent(false), $status);
             }
 
             $this->responseCache[$url] = $response->toArray()['html'];
