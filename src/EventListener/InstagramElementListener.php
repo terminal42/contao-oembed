@@ -108,8 +108,8 @@ class InstagramElementListener
                 'https://graph.facebook.com/v11.0/instagram_oembed?'.$parsedQuery,
                 [
                     'headers' => [
-                        'Authorization' => 'Bearer '.$this->facebookToken
-                    ]
+                        'Authorization' => 'Bearer '.$this->facebookToken,
+                    ],
                 ]
             );
 
