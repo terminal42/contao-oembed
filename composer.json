@@ -14,6 +14,10 @@
         {
             "type": "github",
             "url": "https://github.com/terminal42"
+        },
+        {
+            "type": "other",
+            "url": "https://ko-fi.com/terminal42"
         }
     ],
     "require": {
