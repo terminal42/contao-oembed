@@ -7,7 +7,7 @@
     "authors": [
         {
             "name": "terminal42 gmbh",
-            "homepage": "http://www.terminal42.ch"
+            "homepage": "https://www.terminal42.ch"
         }
     ],
     "funding": [
@@ -20,8 +20,13 @@
             "url": "https://ko-fi.com/terminal42"
         }
     ],
+    "support": {
+        "issues": "https://github.com/terminal42/contao-oembed/issues",
+        "source": "https://github.com/terminal42/contao-oembed",
+        "forum": "https://community.contao.org"
+    },
     "require": {
-        "php": "^7.2 || ^8.0",
+        "php": "^7.4 || ^8.0",
         "ext-json": "*",
         "contao/core-bundle": "^4.9",
         "symfony/http-client": "^4.4 || ^5.0",
@@ -42,6 +47,6 @@
         "contao-manager-plugin": "Terminal42\\OEmbedBundle\\ContaoManager\\Plugin"
     },
     "scripts": {
-        "cs-fixer": "tools/ecs/vendor/bin/ecs check src/ --fix --ansi"
+        "cs-fixer": "@php tools/ecs/vendor/bin/ecs check src/ --config tools/ecs/config.php --fix --ansi"
     }
 }
