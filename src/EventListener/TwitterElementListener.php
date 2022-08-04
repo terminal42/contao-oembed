@@ -32,8 +32,8 @@ class TwitterElementListener
     {
         try {
             $this->getHtmlForQuery($this->prepareQueryForType(
-                $dc->activeRecord->type,
-                (object) ['twitter_url' => $value]
+                (string) $dc->activeRecord->type,
+                ['twitter_url' => $value]
             ));
         } catch (\Exception $e) {
             if (null !== $this->logger) {
@@ -61,7 +61,7 @@ class TwitterElementListener
 
         try {
             $html = $this->getHtmlForQuery(
-                $this->prepareQueryForType($dc->activeRecord->type, $dc->activeRecord)
+                $this->prepareQueryForType((string) $dc->activeRecord->type, (array) $dc->activeRecord)
             );
 
             $this->database->update(
@@ -76,33 +76,33 @@ class TwitterElementListener
         }
     }
 
-    private function prepareQueryForType($type, $data): array
+    private function prepareQueryForType(string $type, array $data): array
     {
         $query = [
-            'url' => $data->twitter_url,
+            'url' => $data['twitter_url'],
             'omit_script' => true,
             'aria_polite' => 'assertive',
             'dnt' => true,
         ];
 
-        if ($data->twitter_theme) {
-            $query['theme'] = $data->twitter_theme;
+        if ($data['twitter_theme'] ?? null) {
+            $query['theme'] = $data['twitter_theme'];
         }
 
         if ('embedded_tweet' === $type) {
-            if (!$data->twitter_cards) {
+            if (!($data['twitter_cards'] ?? false)) {
                 $query['hide_media'] = '1';
             }
 
-            if (!$data->twitter_conversation) {
+            if (!($data['twitter_conversation'] ?? false)) {
                 $query['hide_thread'] = '1';
             }
         } elseif ('user_timeline' === $type) {
-            if ($data->twitter_limit > 0 && $data->twitter_limit <= 20) {
-                $query['limit'] = $data->twitter_limit;
+            if (($data['twitter_limit'] ?? 0) > 0 && ($data['twitter_limit'] ?? 0) <= 20) {
+                $query['limit'] = $data['twitter_limit'];
             }
 
-            if (!empty($chrome = StringUtil::deserialize($data->twitter_chrome))) {
+            if (!empty($data['twitter_chrome']) && !empty($chrome = StringUtil::deserialize($data['twitter_chrome']))) {
                 $query['chrome'] = implode(' ', $chrome);
             }
         } else {

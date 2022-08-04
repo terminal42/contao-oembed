@@ -33,7 +33,7 @@ class InstagramElementListener
     {
         try {
             $this->getHtmlForQuery($this->prepareQuery(
-                (object) ['instagram_url' => $value]
+                ['instagram_url' => $value]
             ));
         } catch (\Exception $e) {
             if (null !== $this->logger) {
@@ -61,7 +61,7 @@ class InstagramElementListener
 
         try {
             $html = $this->getHtmlForQuery(
-                $this->prepareQuery($dc->activeRecord)
+                $this->prepareQuery((array) $dc->activeRecord)
             );
 
             $this->database->update(
@@ -76,18 +76,18 @@ class InstagramElementListener
         }
     }
 
-    private function prepareQuery($data): array
+    private function prepareQuery(array $data): array
     {
         $query = [
-            'url' => $data->instagram_url,
+            'url' => $data['instagram_url'],
             'omitscript' => '1',
         ];
 
-        if ($data->instagram_maxwidth) {
-            $query['maxwidth'] = $data->instagram_maxwidth;
+        if ($data['instagram_maxwidth'] ?? null) {
+            $query['maxwidth'] = $data['instagram_maxwidth'];
         }
 
-        if ($data->instagram_hidecaption) {
+        if ($data['instagram_hidecaption'] ?? false) {
             $query['hidecaption'] = '1';
         }
 
