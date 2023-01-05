@@ -11,6 +11,9 @@
             <trans-unit id="ERR.facebook_url">
                 <source>Invalid Facebook URL (HTTP Status %s)</source>
             </trans-unit>
+            <trans-unit id="ERR.podigee_url">
+                <source>Invalid Podigee URL (HTTP Status %s)</source>
+            </trans-unit>
             <trans-unit id="CTE.embedded_tweet.0">
                 <source>Embedded Tweet</source>
             </trans-unit>
@@ -22,6 +25,9 @@
             </trans-unit>
             <trans-unit id="CTE.oembed_facebook.0">
                 <source>Embedded Facebook post/page/video</source>
+            </trans-unit>
+            <trans-unit id="CTE.oembed_podigee.0">
+                <source>Podigee Podcast</source>
             </trans-unit>
         </body>
     </file>

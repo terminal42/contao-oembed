@@ -2,6 +2,14 @@
 <xliff version="1.1">
     <file datatype="php" original="src/Resources/contao/languages/en/tl_content.php" source-language="en" target-language="de">
         <body>
+            <trans-unit id="tl_content.oembed_url.0">
+                <source>Remote content URL</source>
+                <target>Inhalts-URL</target>
+            </trans-unit>
+            <trans-unit id="tl_content.oembed_url.1">
+                <source>Please enter the URL to the remote content.</source>
+                <target>Bitte geben Sie die URL des entfernten Inhalts ein.</target>
+            </trans-unit>
             <trans-unit id="tl_content.twitter_url.0">
                 <source>Twitter URL</source>
                 <target>Twitter-URL</target>
