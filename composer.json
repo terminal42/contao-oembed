@@ -1,8 +1,8 @@
 {
     "name": "terminal42/contao-oembed",
+    "type": "contao-bundle",
     "description": "Embed a Tweet, a Twitter Timeline or an Instagram Post on your Contao website.",
     "keywords": ["twitter", "tweet", "timeline", "instagram post", "embed"],
-    "type": "contao-bundle",
     "license": "MIT",
     "authors": [
         {
@@ -29,7 +29,7 @@
         "php": "^7.4 || ^8.0",
         "ext-json": "*",
         "contao/core-bundle": "^4.9",
-        "symfony/http-client": "^4.4 || ^5.0",
+        "symfony/http-client": "^4.4 || ^5.0 || ^6.0",
         "psr/log": "^1.0"
     },
     "require-dev": {
