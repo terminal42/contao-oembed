@@ -20,6 +20,9 @@ Embed an Instagram post into your website.
 4. Facbeook page / post / video
 Embed a Facebook post, page or video into your website.
 
+5. TikTok video
+   Embed a TikTok video into your website.
+
 
 ## How does it work?
 

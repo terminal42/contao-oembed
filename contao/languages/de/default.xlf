@@ -16,6 +16,11 @@
             </trans-unit>
             <trans-unit id="ERR.podigee_url">
                 <source>Invalid Podigee URL (HTTP Status %s)</source>
+                <target>Ungültige Podigee-URL (HTTP Status %s)</target>
+            </trans-unit>
+            <trans-unit id="ERR.tiktok_url">
+                <source>Invalid TikTok URL (HTTP Status %s)</source>
+                <target>Ungültige TikTok-URL (HTTP Status %s)</target>
             </trans-unit>
             <trans-unit id="CTE.embedded_tweet.0">
                 <source>Embedded Tweet</source>
@@ -36,6 +41,10 @@
             <trans-unit id="CTE.oembed_podigee.0">
                 <source>Podigee Podcast</source>
                 <target>Podigee Podcast</target>
+            </trans-unit>
+            <trans-unit id="CTE.oembed_tiktok.0">
+                <source>TikTok Video</source>
+                <target>TikTok Video</target>
             </trans-unit>
         </body>
     </file>

@@ -8,6 +8,7 @@ $GLOBALS['TL_DCA']['tl_content']['palettes']['user_timeline'] = '{type_legend},t
 $GLOBALS['TL_DCA']['tl_content']['palettes']['embedded_instagram_post'] = '{type_legend},type;{include_legend},instagram_url,instagram_maxwidth,instagram_hidecaption;{template_legend:hide},customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests;{invisible_legend:hide},invisible,start,stop';
 $GLOBALS['TL_DCA']['tl_content']['palettes']['oembed_facebook'] = '{type_legend},type;{include_legend},facebook_url;{template_legend:hide},customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests;{invisible_legend:hide},invisible,start,stop';
 $GLOBALS['TL_DCA']['tl_content']['palettes']['oembed_podigee'] = '{type_legend},type;{include_legend},oembed_url;{template_legend:hide},customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests;{invisible_legend:hide},invisible,start,stop';
+$GLOBALS['TL_DCA']['tl_content']['palettes']['oembed_tiktok'] = '{type_legend},type;{include_legend},oembed_url;{template_legend:hide},customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests;{invisible_legend:hide},invisible,start,stop';
 
 /*
  * Fields

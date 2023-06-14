@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
  * @ContentElement("embedded_instagram_post", category="media")
  * @ContentElement("oembed_facebook", category="media")
  * @ContentElement("oembed_podigee", category="media")
+ * @ContentElement("oembed_tiktok", category="media")
  */
 class OEmbedController extends AbstractContentElementController
 {
