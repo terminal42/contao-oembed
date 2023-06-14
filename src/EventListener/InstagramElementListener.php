@@ -18,7 +18,7 @@ class InstagramElementListener
     private ?LoggerInterface $logger;
     private array $responseCache = [];
 
-    public function __construct(Connection $database, HttpClientInterface $httpClient, string $facebookToken, LoggerInterface $logger = null)
+    public function __construct(Connection $database, HttpClientInterface $httpClient, string $facebookToken, ?LoggerInterface $logger = null)
     {
         $this->database = $database;
         $this->httpClient = $httpClient;

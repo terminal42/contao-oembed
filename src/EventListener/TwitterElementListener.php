@@ -18,7 +18,7 @@ class TwitterElementListener
     private ?LoggerInterface $logger;
     private array $responseCache = [];
 
-    public function __construct(Connection $database, HttpClientInterface $httpClient, LoggerInterface $logger = null)
+    public function __construct(Connection $database, HttpClientInterface $httpClient, ?LoggerInterface $logger = null)
     {
         $this->database = $database;
         $this->httpClient = $httpClient;
@@ -114,10 +114,8 @@ class TwitterElementListener
 
     /**
      * @throws \Exception
-     *
-     * @return string
      */
-    private function getHtmlForQuery(array $query)
+    private function getHtmlForQuery(array $query): string
     {
         ksort($query, SORT_STRING);
         $parsedQuery = http_build_query($query);
