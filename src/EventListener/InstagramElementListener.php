@@ -29,7 +29,7 @@ class InstagramElementListener
     /**
      * @Callback(table="tl_content", target="fields.instagram_url.save")
      */
-    public function onSaveCallback($value)
+    public function onSaveCallback(string $value): string
     {
         try {
             $this->getHtmlForQuery($this->prepareQuery(

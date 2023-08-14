@@ -28,7 +28,7 @@ class TwitterElementListener
     /**
      * @Callback(table="tl_content", target="fields.twitter_url.save")
      */
-    public function onSaveCallback($value, DataContainer $dc)
+    public function onSaveCallback(string $value, DataContainer $dc): string
     {
         try {
             $this->getHtmlForQuery($this->prepareQueryForType(

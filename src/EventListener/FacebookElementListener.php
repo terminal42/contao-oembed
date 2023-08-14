@@ -29,7 +29,7 @@ class FacebookElementListener
     /**
      * @Callback(table="tl_content", target="fields.facebook_url.save")
      */
-    public function onSaveCallback($value)
+    public function onSaveCallback(string $value): string
     {
         try {
             $this->getHtmlForUrl($value);

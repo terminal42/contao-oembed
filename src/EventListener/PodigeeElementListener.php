@@ -27,7 +27,7 @@ class PodigeeElementListener
     /**
      * @Callback(table="tl_content", target="fields.oembed_url.save")
      */
-    public function onSaveCallback($value, DataContainer $dc)
+    public function onSaveCallback(string $value, DataContainer $dc): string
     {
         if (
             !$dc->activeRecord
