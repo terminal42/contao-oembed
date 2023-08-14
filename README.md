@@ -8,21 +8,23 @@ A Contao 4 bundle that provides several oEmbed widgets (Twitter, Instagram) for 
 
 This bundle provides content elements that can be added to your website.
 
-1. Single Tweet
+1. **Single Tweet**  
 A new content element to embed a single tweet.
 
-2. Twitter user timeline
+2. **Twitter user timeline**  
 A new content element to embed a user's timeline.
 
-3. Instagram post
+3. **Instagram post**  
 Embed an Instagram post into your website.
 
-4. Facbeook page / post / video
+4. **Facbeook page / post / video**  
 Embed a Facebook post, page or video into your website.
 
-5. TikTok video
-   Embed a TikTok video into your website.
+5. **TikTok video**  
+Embed a TikTok video into your website.
 
+6. **Podigee Podcast**  
+Embed a Podigee Potcast into your website.
 
 ## How does it work?
 
