@@ -13,8 +13,11 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class PodigeeElementListener
 {
     private Connection $database;
+
     private HttpClientInterface $httpClient;
+
     private ?LoggerInterface $logger;
+
     private array $responseCache = [];
 
     public function __construct(Connection $database, HttpClientInterface $httpClient, ?LoggerInterface $logger = null)
@@ -44,7 +47,7 @@ class PodigeeElementListener
                 $this->logger->info($e->getMessage(), ['exception' => $e]);
             }
 
-            throw new \RuntimeException(sprintf($GLOBALS['TL_LANG']['ERR']['podigee_url'], $e->getCode()));
+            throw new \RuntimeException(\sprintf($GLOBALS['TL_LANG']['ERR']['podigee_url'], $e->getCode()));
         }
 
         return $value;
@@ -71,7 +74,7 @@ class PodigeeElementListener
                 [
                     'html' => $html,
                 ],
-                ['id' => $dc->id]
+                ['id' => $dc->id],
             );
         } catch (\Exception $e) {
             return;
@@ -91,7 +94,7 @@ class PodigeeElementListener
                     'headers' => [
                         'Accept' => 'application/json',
                     ],
-                ]
+                ],
             );
 
             if (($status = $response->getStatusCode()) < 200 || $status > 301) {

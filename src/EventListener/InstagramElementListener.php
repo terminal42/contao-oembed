@@ -13,9 +13,13 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class InstagramElementListener
 {
     private Connection $database;
+
     private HttpClientInterface $httpClient;
+
     private string $facebookToken;
+
     private ?LoggerInterface $logger;
+
     private array $responseCache = [];
 
     public function __construct(Connection $database, HttpClientInterface $httpClient, string $facebookToken, ?LoggerInterface $logger = null)
@@ -33,14 +37,14 @@ class InstagramElementListener
     {
         try {
             $this->getHtmlForQuery($this->prepareQuery(
-                (object) ['instagram_url' => $value]
+                (object) ['instagram_url' => $value],
             ));
         } catch (\Exception $e) {
             if (null !== $this->logger) {
                 $this->logger->info($e->getMessage(), ['exception' => $e]);
             }
 
-            throw new \RuntimeException(sprintf($GLOBALS['TL_LANG']['ERR']['instagram_url'], $e->getCode()));
+            throw new \RuntimeException(\sprintf($GLOBALS['TL_LANG']['ERR']['instagram_url'], $e->getCode()));
         }
 
         return $value;
@@ -61,7 +65,7 @@ class InstagramElementListener
 
         try {
             $html = $this->getHtmlForQuery(
-                $this->prepareQuery($dc->activeRecord)
+                $this->prepareQuery($dc->activeRecord),
             );
 
             $this->database->update(
@@ -69,7 +73,7 @@ class InstagramElementListener
                 [
                     'html' => $html,
                 ],
-                ['id' => $dc->id]
+                ['id' => $dc->id],
             );
         } catch (\Exception $e) {
             return;
@@ -110,7 +114,7 @@ class InstagramElementListener
                     'headers' => [
                         'Authorization' => 'Bearer '.$this->facebookToken,
                     ],
-                ]
+                ],
             );
 
             if (($status = $response->getStatusCode()) < 200 || $status > 301) {

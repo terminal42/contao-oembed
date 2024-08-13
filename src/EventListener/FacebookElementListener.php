@@ -13,9 +13,13 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class FacebookElementListener
 {
     private Connection $database;
+
     private HttpClientInterface $httpClient;
+
     private string $facebookToken;
+
     private ?LoggerInterface $logger;
+
     private array $responseCache = [];
 
     public function __construct(Connection $database, HttpClientInterface $httpClient, string $facebookToken, ?LoggerInterface $logger = null)
@@ -38,7 +42,7 @@ class FacebookElementListener
                 $this->logger->info($e->getMessage(), ['exception' => $e]);
             }
 
-            throw new \RuntimeException(sprintf($GLOBALS['TL_LANG']['ERR']['facebook_url'], $e->getCode()));
+            throw new \RuntimeException(\sprintf($GLOBALS['TL_LANG']['ERR']['facebook_url'], $e->getCode()));
         }
 
         return $value;
@@ -65,7 +69,7 @@ class FacebookElementListener
                 [
                     'html' => $html,
                 ],
-                ['id' => $dc->id]
+                ['id' => $dc->id],
             );
         } catch (\Exception $e) {
             return;
@@ -85,7 +89,7 @@ class FacebookElementListener
                     'headers' => [
                         'Authorization' => 'Bearer '.$this->facebookToken,
                     ],
-                ]
+                ],
             );
 
             if (($status = $response->getStatusCode()) < 200 || $status > 301) {

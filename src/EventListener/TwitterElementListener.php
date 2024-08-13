@@ -14,8 +14,11 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class TwitterElementListener
 {
     private Connection $database;
+
     private HttpClientInterface $httpClient;
+
     private ?LoggerInterface $logger;
+
     private array $responseCache = [];
 
     public function __construct(Connection $database, HttpClientInterface $httpClient, ?LoggerInterface $logger = null)
@@ -33,14 +36,14 @@ class TwitterElementListener
         try {
             $this->getHtmlForQuery($this->prepareQueryForType(
                 (string) $dc->activeRecord->type,
-                (object) ['twitter_url' => $value]
+                (object) ['twitter_url' => $value],
             ));
         } catch (\Exception $e) {
             if (null !== $this->logger) {
                 $this->logger->info($e->getMessage(), ['exception' => $e]);
             }
 
-            throw new \RuntimeException(sprintf($GLOBALS['TL_LANG']['ERR']['twitter_url'], $e->getCode()));
+            throw new \RuntimeException(\sprintf($GLOBALS['TL_LANG']['ERR']['twitter_url'], $e->getCode()));
         }
 
         return $value;
@@ -61,7 +64,7 @@ class TwitterElementListener
 
         try {
             $html = $this->getHtmlForQuery(
-                $this->prepareQueryForType((string) $dc->activeRecord->type, $dc->activeRecord)
+                $this->prepareQueryForType((string) $dc->activeRecord->type, $dc->activeRecord),
             );
 
             $this->database->update(
@@ -69,7 +72,7 @@ class TwitterElementListener
                 [
                     'html' => $html,
                 ],
-                ['id' => $dc->id]
+                ['id' => $dc->id],
             );
         } catch (\Exception $e) {
             return;
@@ -106,7 +109,7 @@ class TwitterElementListener
                 $query['chrome'] = implode(' ', $chrome);
             }
         } else {
-            throw new \InvalidArgumentException(sprintf('Unknown element type "%s"', $type));
+            throw new \InvalidArgumentException(\sprintf('Unknown element type "%s"', $type));
         }
 
         return $query;
@@ -124,7 +127,7 @@ class TwitterElementListener
         if (!isset($this->responseCache[$hash])) {
             $response = $this->httpClient->request(
                 'GET',
-                'https://publish.twitter.com/oembed?'.$parsedQuery
+                'https://publish.twitter.com/oembed?'.$parsedQuery,
             );
 
             if (($status = $response->getStatusCode()) < 200 || $status >= 300) {
