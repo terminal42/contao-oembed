@@ -109,7 +109,7 @@ class InstagramElementListener
         if (!isset($this->responseCache[$hash])) {
             $response = $this->httpClient->request(
                 'GET',
-                'https://graph.facebook.com/v17.0/instagram_oembed?'.$parsedQuery,
+                'https://graph.facebook.com/v23.0/instagram_oembed?'.$parsedQuery,
                 [
                     'headers' => [
                         'Authorization' => 'Bearer '.$this->facebookToken,

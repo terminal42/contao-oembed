@@ -110,7 +110,7 @@ class FacebookElementListener
         switch (true) {
             // Facebook page name or ID
             case preg_match('{^https://www\.facebook\.com/([^/?]+)$}', $url):
-                return 'https://graph.facebook.com/v17.0/oembed_page';
+                return 'https://graph.facebook.com/v23.0/oembed_page';
 
             // Facebook Post
             case preg_match('{^https://www\.facebook\.com/[^/]+/posts/.+$}', $url):
@@ -121,13 +121,13 @@ class FacebookElementListener
             case preg_match('{^https://www\.facebook\.com/media/set\?set=.+$}', $url):
             case preg_match('{^https://www\.facebook\.com/questions/.+$}', $url):
             case preg_match('{^https://www\.facebook\.com/notes/[^/]+/[^/]+/.+$}', $url):
-                return 'https://graph.facebook.com/v17.0/oembed_post';
+                return 'https://graph.facebook.com/v23.0/oembed_post';
 
             // Facebook Video
             case preg_match('{^https://www\.facebook\.com/[^/]+/videos/[^/]+/$}', $url):
             case preg_match('{^https://www\.facebook\.com/video\.php\?id=.+$}', $url):
             case preg_match('{^https://www\.facebook\.com/video\.php\?v=.+$}', $url):
-                return 'https://graph.facebook.com/v17.0/oembed_video';
+                return 'https://graph.facebook.com/v23.0/oembed_video';
         }
 
         throw new \RuntimeException('Unknown Facebook URL format');
