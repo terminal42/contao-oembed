@@ -26,10 +26,15 @@
         "forum": "https://community.contao.org"
     },
     "require": {
-        "php": "^7.4 || ^8.0",
+        "php": "^8.3",
         "ext-json": "*",
-        "contao/core-bundle": "^4.9",
-        "symfony/http-client": "^4.4 || ^5.0 || ^6.0",
+        "contao/core-bundle": "^5.7",
+        "doctrine/dbal": "^3.6 || ^4.3",
+        "symfony/config": "^7.4",
+        "symfony/dependency-injection": "^7.4",
+        "symfony/http-client-contracts": "^3.0",
+        "symfony/http-foundation": "^7.4",
+        "symfony/http-kernel": "^7.4",
         "psr/log": "^1.0 || ^2.0 || ^3.0"
     },
     "require-dev": {

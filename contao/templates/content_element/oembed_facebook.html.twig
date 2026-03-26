@@ -1,0 +1,13 @@
+{% extends '@Contao/content_element/_base.html.twig' %}
+
+{% block content %}
+    {{ html|raw }}
+{% endblock %}
+
+{% block script %}
+    {% if not as_editor_view %}
+        {% add 'oembed_facebook' to head %}
+            <script src="https://connect.facebook.net/en_US/sdk.js" async></script>
+        {% endadd %}
+    {% endif %}
+{% endblock %}

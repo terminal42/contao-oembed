@@ -1,7 +1,7 @@
 
 # terminal42/contao-oembed
 
-A Contao 4 bundle that provides several oEmbed widgets (Twitter, Instagram) for a website.
+A Contao bundle that provides several oEmbed widgets (Twitter, Instagram) for a website.
 
 
 ## Features

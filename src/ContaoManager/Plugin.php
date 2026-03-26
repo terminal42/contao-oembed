@@ -12,7 +12,7 @@ use Terminal42\OEmbedBundle\Terminal42OEmbedBundle;
 
 class Plugin implements BundlePluginInterface
 {
-    public function getBundles(ParserInterface $parser)
+    public function getBundles(ParserInterface $parser): array
     {
         return [
             (new BundleConfig(Terminal42OEmbedBundle::class))->setLoadAfter([ContaoCoreBundle::class]),

@@ -1,0 +1,13 @@
+{% extends '@Contao/content_element/_base.html.twig' %}
+
+{% block content %}
+    {{ html|raw }}
+{% endblock %}
+
+{% block script %}
+    {% if not as_editor_view %}
+        {% add 'oembed_twitter' to head %}
+            <script src="https://platform.twitter.com/widgets.js" async></script>
+        {% endadd %}
+    {% endif %}
+{% endblock %}

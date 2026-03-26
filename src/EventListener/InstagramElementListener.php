@@ -4,35 +4,26 @@ declare(strict_types=1);
 
 namespace Terminal42\OEmbedBundle\EventListener;
 
-use Contao\CoreBundle\ServiceAnnotation\Callback;
+use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\DataContainer;
 use Doctrine\DBAL\Connection;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class InstagramElementListener
 {
-    private Connection $database;
-
-    private HttpClientInterface $httpClient;
-
-    private string $facebookToken;
-
-    private ?LoggerInterface $logger;
-
     private array $responseCache = [];
 
-    public function __construct(Connection $database, HttpClientInterface $httpClient, string $facebookToken, ?LoggerInterface $logger = null)
-    {
-        $this->database = $database;
-        $this->httpClient = $httpClient;
-        $this->facebookToken = $facebookToken;
-        $this->logger = $logger;
+    public function __construct(
+        private readonly Connection $database,
+        private readonly HttpClientInterface $httpClient,
+        #[Autowire(param: 'terminal42_oembed.facebook_token')] private readonly string $facebookToken,
+        private readonly LoggerInterface|null $logger = null,
+    ) {
     }
 
-    /**
-     * @Callback(table="tl_content", target="fields.instagram_url.save")
-     */
+    #[AsCallback('tl_content', 'fields.instagram_url.save')]
     public function onSaveCallback(string $value): string
     {
         try {
@@ -50,9 +41,7 @@ class InstagramElementListener
         return $value;
     }
 
-    /**
-     * @Callback(table="tl_content", target="config.onsubmit")
-     */
+    #[AsCallback('tl_content', 'config.onsubmit')]
     public function onSubmitCallback(DataContainer $dc): void
     {
         if (
@@ -75,7 +64,7 @@ class InstagramElementListener
                 ],
                 ['id' => $dc->id],
             );
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             return;
         }
     }

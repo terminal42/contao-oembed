@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Terminal42\OEmbedBundle\EventListener;
 
-use Contao\CoreBundle\ServiceAnnotation\Callback;
+use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\DataContainer;
 use Doctrine\DBAL\Connection;
 use Psr\Log\LoggerInterface;
@@ -12,24 +12,16 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class PodigeeElementListener
 {
-    private Connection $database;
-
-    private HttpClientInterface $httpClient;
-
-    private ?LoggerInterface $logger;
-
     private array $responseCache = [];
 
-    public function __construct(Connection $database, HttpClientInterface $httpClient, ?LoggerInterface $logger = null)
-    {
-        $this->database = $database;
-        $this->httpClient = $httpClient;
-        $this->logger = $logger;
+    public function __construct(
+        private readonly Connection $database,
+        private readonly HttpClientInterface $httpClient,
+        private readonly LoggerInterface|null $logger = null,
+    ) {
     }
 
-    /**
-     * @Callback(table="tl_content", target="fields.oembed_url.save")
-     */
+    #[AsCallback('tl_content', 'fields.oembed_url.save')]
     public function onSaveCallback(string $value, DataContainer $dc): string
     {
         if (
@@ -53,9 +45,7 @@ class PodigeeElementListener
         return $value;
     }
 
-    /**
-     * @Callback(table="tl_content", target="config.onsubmit")
-     */
+    #[AsCallback('tl_content', 'config.onsubmit')]
     public function onSubmitCallback(DataContainer $dc): void
     {
         if (
@@ -76,7 +66,7 @@ class PodigeeElementListener
                 ],
                 ['id' => $dc->id],
             );
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             return;
         }
     }
