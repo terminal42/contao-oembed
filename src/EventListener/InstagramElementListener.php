@@ -5,82 +5,57 @@ declare(strict_types=1);
 namespace Terminal42\OEmbedBundle\EventListener;
 
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
-use Contao\DataContainer;
-use Doctrine\DBAL\Connection;
+use Contao\DC_Table;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
-class InstagramElementListener
+class InstagramElementListener extends AbstractElementListener
 {
-    private array $responseCache = [];
-
     public function __construct(
-        private readonly Connection $database,
-        private readonly HttpClientInterface $httpClient,
+        HttpClientInterface $httpClient,
+        TranslatorInterface $translator,
         #[Autowire(param: 'terminal42_oembed.facebook_token')] private readonly string $facebookToken,
-        private readonly LoggerInterface|null $logger = null,
+        LoggerInterface|null $logger = null,
     ) {
+        parent::__construct($httpClient, $translator, $logger);
     }
 
     #[AsCallback('tl_content', 'fields.instagram_url.save')]
-    public function onSaveCallback(string $value): string
+    public function validateOnSave(string $value, DC_Table $dc): string
     {
-        try {
-            $this->getHtmlForQuery($this->prepareQuery(
-                (object) ['instagram_url' => $value],
-            ));
-        } catch (\Exception $e) {
-            if (null !== $this->logger) {
-                $this->logger->info($e->getMessage(), ['exception' => $e]);
-            }
-
-            throw new \RuntimeException(\sprintf($GLOBALS['TL_LANG']['ERR']['instagram_url'], $e->getCode()));
-        }
-
-        return $value;
+        return parent::validateOnSave($value, $dc);
     }
 
-    #[AsCallback('tl_content', 'config.onsubmit')]
-    public function onSubmitCallback(DataContainer $dc): void
+    protected function isSupported(array $activeRecord): bool
     {
-        if (
-            !$dc->activeRecord
-            || 'embedded_instagram_post' !== $dc->activeRecord->type
-            || '' === $dc->activeRecord->instagram_url
-        ) {
-            return;
-        }
-
-        try {
-            $html = $this->getHtmlForQuery(
-                $this->prepareQuery($dc->activeRecord),
-            );
-
-            $this->database->update(
-                'tl_content',
-                [
-                    'html' => $html,
-                ],
-                ['id' => $dc->id],
-            );
-        } catch (\Exception) {
-            return;
-        }
+        return 'embedded_instagram_post' === $activeRecord['type']
+            && !empty($activeRecord['instagram_url']);
     }
 
-    private function prepareQuery(object $data): array
+    protected function getHtml(array $activeRecord): string
+    {
+        return $this->getHtmlForQuery($this->prepareQuery($activeRecord));
+    }
+
+    protected function throwOnWidgetError(\Exception $exception): never
+    {
+        throw new \RuntimeException($this->translator->trans('ERR.instagram_url', [$exception->getCode()], 'contao_default'));
+    }
+
+    private function prepareQuery(array $data): array
     {
         $query = [
-            'url' => $data->instagram_url,
+            'url' => $data['instagram_url'],
             'omitscript' => '1',
         ];
 
-        if ($data->instagram_maxwidth ?? null) {
-            $query['maxwidth'] = $data->instagram_maxwidth;
+        if ($data['instagram_maxwidth'] ?? null) {
+            $query['maxwidth'] = $data['instagram_maxwidth'];
         }
 
-        if ($data->instagram_hidecaption ?? false) {
+        if ($data['instagram_hidecaption'] ?? false) {
             $query['hidecaption'] = '1';
         }
 

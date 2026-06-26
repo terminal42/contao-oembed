@@ -5,101 +5,64 @@ declare(strict_types=1);
 namespace Terminal42\OEmbedBundle\EventListener;
 
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
-use Contao\DataContainer;
+use Contao\DC_Table;
 use Contao\StringUtil;
-use Doctrine\DBAL\Connection;
-use Psr\Log\LoggerInterface;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-class TwitterElementListener
+class TwitterElementListener extends AbstractElementListener
 {
-    private array $responseCache = [];
-
-    public function __construct(
-        private readonly Connection $database,
-        private readonly HttpClientInterface $httpClient,
-        private readonly LoggerInterface|null $logger = null,
-    ) {
-    }
-
     #[AsCallback('tl_content', 'fields.twitter_url.save')]
-    public function onSaveCallback(string $value, DataContainer $dc): string
+    public function validateOnSave(string $value, DC_Table $dc): string
     {
-        try {
-            $this->getHtmlForQuery($this->prepareQueryForType(
-                (string) $dc->activeRecord->type,
-                (object) ['twitter_url' => $value],
-            ));
-        } catch (\Exception $e) {
-            if (null !== $this->logger) {
-                $this->logger->info($e->getMessage(), ['exception' => $e]);
-            }
-
-            throw new \RuntimeException(\sprintf($GLOBALS['TL_LANG']['ERR']['twitter_url'], $e->getCode()));
-        }
-
-        return $value;
+        return parent::validateOnSave($value, $dc);
     }
 
-    #[AsCallback('tl_content', 'config.onsubmit')]
-    public function onSubmitCallback(DataContainer $dc): void
+    protected function isSupported(array $activeRecord): bool
     {
-        if (
-            !$dc->activeRecord
-            || '' === $dc->activeRecord->twitter_url
-            || !\in_array($dc->activeRecord->type, ['embedded_tweet', 'user_timeline'], true)
-        ) {
-            return;
-        }
-
-        try {
-            $html = $this->getHtmlForQuery(
-                $this->prepareQueryForType((string) $dc->activeRecord->type, $dc->activeRecord),
-            );
-
-            $this->database->update(
-                'tl_content',
-                [
-                    'html' => $html,
-                ],
-                ['id' => $dc->id],
-            );
-        } catch (\Exception) {
-            return;
-        }
+        return \in_array($activeRecord['type'], ['embedded_tweet', 'user_timeline'], true)
+            && !empty($activeRecord['twitter_url']);
     }
 
-    private function prepareQueryForType(string $type, object $data): array
+    protected function getHtml(array $activeRecord): string
+    {
+        return $this->getHtmlForQuery($this->prepareQueryForType($activeRecord));
+    }
+
+    protected function throwOnWidgetError(\Exception $exception): never
+    {
+        throw new \RuntimeException($this->translator->trans('ERR.twitter_url', [$exception->getCode()], 'contao_default'));
+    }
+
+    private function prepareQueryForType(array $data): array
     {
         $query = [
-            'url' => $data->twitter_url,
+            'url' => $data['twitter_url'],
             'omit_script' => true,
             'aria_polite' => 'assertive',
             'dnt' => true,
         ];
 
-        if ($data->twitter_theme ?? null) {
-            $query['theme'] = $data->twitter_theme;
+        if ($data['twitter_theme'] ?? null) {
+            $query['theme'] = $data['twitter_theme'];
         }
 
-        if ('embedded_tweet' === $type) {
-            if (!($data->twitter_cards ?? false)) {
+        if ('embedded_tweet' === $data['type']) {
+            if (!($data['twitter_cards'] ?? false)) {
                 $query['hide_media'] = '1';
             }
 
             if (!($data->twitter_conversation ?? false)) {
                 $query['hide_thread'] = '1';
             }
-        } elseif ('user_timeline' === $type) {
-            if (($data->twitter_limit ?? 0) > 0 && ($data->twitter_limit ?? 0) <= 20) {
-                $query['limit'] = $data->twitter_limit;
+        } elseif ('user_timeline' === $data['type']) {
+            if (($data['twitter_limit'] ?? 0) > 0 && ($data['twitter_limit'] ?? 0) <= 20) {
+                $query['limit'] = $data['twitter_limit'];
             }
 
-            if (!empty($data->twitter_chrome) && !empty($chrome = StringUtil::deserialize($data->twitter_chrome))) {
+            if (!empty($data['twitter_chrome']) && !empty($chrome = StringUtil::deserialize($data['twitter_chrome']))) {
                 $query['chrome'] = implode(' ', $chrome);
             }
         } else {
-            throw new \InvalidArgumentException(\sprintf('Unknown element type "%s"', $type));
+            throw new \InvalidArgumentException(\sprintf('Unknown element type "%s"', $data['type']));
         }
 
         return $query;
@@ -117,7 +80,7 @@ class TwitterElementListener
         if (!isset($this->responseCache[$hash])) {
             $response = $this->httpClient->request(
                 'GET',
-                'https://publish.twitter.com/oembed?'.$parsedQuery,
+                'https://publish.x.com/oembed?'.$parsedQuery,
             );
 
             if (($status = $response->getStatusCode()) < 200 || $status >= 300) {

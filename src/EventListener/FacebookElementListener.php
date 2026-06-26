@@ -5,64 +5,43 @@ declare(strict_types=1);
 namespace Terminal42\OEmbedBundle\EventListener;
 
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
-use Contao\DataContainer;
-use Doctrine\DBAL\Connection;
+use Contao\DC_Table;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
-class FacebookElementListener
+class FacebookElementListener extends AbstractElementListener
 {
-    private array $responseCache = [];
-
     public function __construct(
-        private readonly Connection $database,
-        private readonly HttpClientInterface $httpClient,
+        HttpClientInterface $httpClient,
+        TranslatorInterface $translator,
         #[Autowire(param: 'terminal42_oembed.facebook_token')] private readonly string $facebookToken,
-        private readonly LoggerInterface|null $logger = null,
+        LoggerInterface|null $logger = null,
     ) {
+        parent::__construct($httpClient, $translator, $logger);
     }
 
     #[AsCallback('tl_content', 'fields.facebook_url.save')]
-    public function onSaveCallback(string $value): string
+    public function validateOnSave(string $value, DC_Table $dc): string
     {
-        try {
-            $this->getHtmlForUrl($value);
-        } catch (\Exception $e) {
-            if (null !== $this->logger) {
-                $this->logger->info($e->getMessage(), ['exception' => $e]);
-            }
-
-            throw new \RuntimeException(\sprintf($GLOBALS['TL_LANG']['ERR']['facebook_url'], $e->getCode()));
-        }
-
-        return $value;
+        return parent::validateOnSave($value, $dc);
     }
 
-    #[AsCallback('tl_content', 'config.onsubmit')]
-    public function onSubmitCallback(DataContainer $dc): void
+    protected function isSupported(array $activeRecord): bool
     {
-        if (
-            !$dc->activeRecord
-            || 'embedded_facebook' !== $dc->activeRecord->type
-            || '' === $dc->activeRecord->facebook_url
-        ) {
-            return;
-        }
+        return 'embedded_facebook' === $activeRecord['type']
+            && !empty($activeRecord['facebook_url']);
+    }
 
-        try {
-            $html = $this->getHtmlForUrl($dc->activeRecord->facebook_url);
+    protected function getHtml(array $activeRecord): string
+    {
+        return $this->getHtmlForUrl($activeRecord['facebook_url']);
+    }
 
-            $this->database->update(
-                'tl_content',
-                [
-                    'html' => $html,
-                ],
-                ['id' => $dc->id],
-            );
-        } catch (\Exception) {
-            return;
-        }
+    protected function throwOnWidgetError(\Exception $exception): never
+    {
+        throw new \RuntimeException($this->translator->trans('ERR.facebook_url', [$exception->getCode()], 'contao_default'));
     }
 
     /**

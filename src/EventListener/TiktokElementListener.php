@@ -4,78 +4,18 @@ declare(strict_types=1);
 
 namespace Terminal42\OEmbedBundle\EventListener;
 
-use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
-use Contao\DataContainer;
-use Doctrine\DBAL\Connection;
-use Psr\Log\LoggerInterface;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
-
-class TiktokElementListener
+class TiktokElementListener extends AbstractElementListener
 {
-    private array $responseCache = [];
-
-    public function __construct(
-        private readonly Connection $database,
-        private readonly HttpClientInterface $httpClient,
-        private readonly LoggerInterface|null $logger = null,
-    ) {
+    protected function isSupported(array $activeRecord): bool
+    {
+        return 'oembed_tiktok' === $activeRecord['type']
+            && !empty($activeRecord['oembed_url']);
     }
 
-    #[AsCallback('tl_content', 'fields.oembed_url.save')]
-    public function onSaveCallback(string $value, DataContainer $dc): string
+    protected function getHtml(array $activeRecord): string
     {
-        if (
-            !$dc->activeRecord
-            || 'oembed_tiktok' !== $dc->activeRecord->type
-            || empty($dc->activeRecord->oembed_url)
-        ) {
-            return $value;
-        }
+        $url = $activeRecord['oembed_url'];
 
-        try {
-            $this->getHtmlForUrl($value);
-        } catch (\Exception $e) {
-            if (null !== $this->logger) {
-                $this->logger->info($e->getMessage(), ['exception' => $e]);
-            }
-
-            throw new \RuntimeException(\sprintf($GLOBALS['TL_LANG']['ERR']['tiktok_url'], $e->getCode()));
-        }
-
-        return $value;
-    }
-
-    #[AsCallback('tl_content', 'config.onsubmit')]
-    public function onSubmitCallback(DataContainer $dc): void
-    {
-        if (
-            !$dc->activeRecord
-            || 'oembed_tiktok' !== $dc->activeRecord->type
-            || empty($dc->activeRecord->oembed_url)
-        ) {
-            return;
-        }
-
-        try {
-            $html = $this->getHtmlForUrl($dc->activeRecord->oembed_url);
-
-            $this->database->update(
-                'tl_content',
-                [
-                    'html' => $html,
-                ],
-                ['id' => $dc->id],
-            );
-        } catch (\Exception) {
-            return;
-        }
-    }
-
-    /**
-     * @throws \Exception
-     */
-    private function getHtmlForUrl(string $url): string
-    {
         if (!isset($this->responseCache[$url])) {
             $response = $this->httpClient->request(
                 'GET',
@@ -95,5 +35,10 @@ class TiktokElementListener
         }
 
         return $this->responseCache[$url];
+    }
+
+    protected function throwOnWidgetError(\Exception $exception): never
+    {
+        throw new \RuntimeException($this->translator->trans('ERR.tiktok_url', [$exception->getCode()], 'contao_default'));
     }
 }
