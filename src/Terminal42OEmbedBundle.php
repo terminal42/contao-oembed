@@ -4,24 +4,39 @@ declare(strict_types=1);
 
 namespace Terminal42\OEmbedBundle;
 
-use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
-use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
-class Terminal42OEmbedBundle extends Bundle
+class Terminal42OEmbedBundle extends AbstractBundle
 {
-    #[\Override]
-    public function getPath(): string
+    /**
+     * @param array<string, mixed> $config
+     */
+    public function loadExtension(array $config, ContainerConfigurator $configurator, ContainerBuilder $container): void
     {
-        return \dirname(__DIR__);
+        $configurator
+            ->services()
+            ->load(__NAMESPACE__.'\\', '../src/')
+            ->autoconfigure()
+            ->autowire()
+        ;
+
+        $configurator->parameters()->set('terminal42_oembed.facebook_token', $config['facebook_token']);
     }
 
-    #[\Override]
-    public function getContainerExtension(): ExtensionInterface
+    public function configure(DefinitionConfigurator $definition): void
     {
-        if (null === $this->extension) {
-            $this->extension = $this->createContainerExtension();
-        }
+        $rootNode = $definition->rootNode();
 
-        return $this->extension;
+        $rootNode
+            ->children()
+                ->scalarNode('facebook_token')
+                    ->defaultValue('144465555597023|5fe9265371e3f65dbf07738a1a6920a1')
+                    ->info('Access token for Facebook Graph API')
+                ->end()
+            ->end()
+        ;
     }
 }
