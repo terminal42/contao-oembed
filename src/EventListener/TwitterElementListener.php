@@ -62,7 +62,7 @@ class TwitterElementListener extends AbstractElementListener
                 $query['hide_media'] = '1';
             }
 
-            if (!($data->twitter_conversation ?? false)) {
+            if (!($data['twitter_conversation'] ?? false)) {
                 $query['hide_thread'] = '1';
             }
         } elseif ('user_timeline' === $data['type']) {
