@@ -13,15 +13,26 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class FacebookElementListener extends AbstractElementListener
 {
+    private readonly HttpClientInterface $httpClient;
+
     public function __construct(
+        private readonly TranslatorInterface $translator,
         HttpClientInterface $httpClient,
-        TranslatorInterface $translator,
-        #[Autowire(param: 'terminal42_oembed.facebook_token')] private readonly string $facebookToken,
+        #[Autowire(param: 'terminal42_oembed.facebook_token')] string|null $facebookToken,
         LoggerInterface|null $logger = null,
     ) {
-        parent::__construct($httpClient, $translator, $logger);
+        parent::__construct($logger);
+
+        if ($facebookToken) {
+            $this->httpClient = $httpClient->withOptions([
+                'auth_bearer' => $facebookToken,
+            ]);
+        } else {
+            $this->httpClient = $httpClient;
+        }
     }
 
+    #[\Override]
     #[AsCallback('tl_content', 'fields.facebook_url.save')]
     public function validateOnSave(string $value, DC_Table $dc): string
     {
@@ -53,11 +64,6 @@ class FacebookElementListener extends AbstractElementListener
             $response = $this->httpClient->request(
                 'GET',
                 $this->getApiEndpointForUrl($url).'?omitscript=true&url='.$url,
-                [
-                    'headers' => [
-                        'Authorization' => 'Bearer '.$this->facebookToken,
-                    ],
-                ],
             );
 
             if (($status = $response->getStatusCode()) < 200 || $status > 301) {

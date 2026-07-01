@@ -4,8 +4,20 @@ declare(strict_types=1);
 
 namespace Terminal42\OEmbedBundle\EventListener;
 
+use Psr\Log\LoggerInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
+
 class TiktokElementListener extends AbstractElementListener
 {
+    public function __construct(
+        private readonly HttpClientInterface $httpClient,
+        private readonly TranslatorInterface $translator,
+        LoggerInterface|null $logger = null,
+    ) {
+        parent::__construct($logger);
+    }
+
     protected function isSupported(array $activeRecord): bool
     {
         return 'oembed_tiktok' === $activeRecord['type']
@@ -14,7 +26,7 @@ class TiktokElementListener extends AbstractElementListener
 
     protected function getHtml(array $activeRecord): string
     {
-        $url = $activeRecord['oembed_url'];
+        $url = (string) $activeRecord['oembed_url'];
 
         if (!isset($this->responseCache[$url])) {
             $response = $this->httpClient->request(

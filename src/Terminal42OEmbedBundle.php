@@ -23,17 +23,15 @@ class Terminal42OEmbedBundle extends AbstractBundle
             ->autowire()
         ;
 
-        $configurator->parameters()->set('terminal42_oembed.facebook_token', $config['facebook_token']);
+        $configurator->parameters()->set('terminal42_oembed.facebook_token', $config['facebook_token'] ?: null);
     }
 
     public function configure(DefinitionConfigurator $definition): void
     {
         $rootNode = $definition->rootNode();
-
         $rootNode
             ->children()
                 ->scalarNode('facebook_token')
-                    ->defaultValue('144465555597023|5fe9265371e3f65dbf07738a1a6920a1')
                     ->info('Access token for Facebook Graph API')
                 ->end()
             ->end()

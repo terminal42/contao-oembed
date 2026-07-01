@@ -7,9 +7,21 @@ namespace Terminal42\OEmbedBundle\EventListener;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\DC_Table;
 use Contao\StringUtil;
+use Psr\Log\LoggerInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class TwitterElementListener extends AbstractElementListener
 {
+    public function __construct(
+        private readonly HttpClientInterface $httpClient,
+        private readonly TranslatorInterface $translator,
+        LoggerInterface|null $logger = null,
+    ) {
+        parent::__construct($logger);
+    }
+
+    #[\Override]
     #[AsCallback('tl_content', 'fields.twitter_url.save')]
     public function validateOnSave(string $value, DC_Table $dc): string
     {

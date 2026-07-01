@@ -13,15 +13,26 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class InstagramElementListener extends AbstractElementListener
 {
+    private readonly HttpClientInterface $httpClient;
+
     public function __construct(
+        private readonly TranslatorInterface $translator,
         HttpClientInterface $httpClient,
-        TranslatorInterface $translator,
-        #[Autowire(param: 'terminal42_oembed.facebook_token')] private readonly string $facebookToken,
+        #[Autowire(param: 'terminal42_oembed.facebook_token')] string|null $facebookToken,
         LoggerInterface|null $logger = null,
     ) {
-        parent::__construct($httpClient, $translator, $logger);
+        parent::__construct($logger);
+
+        if ($facebookToken) {
+            $this->httpClient = $httpClient->withOptions([
+                'auth_bearer' => $facebookToken,
+            ]);
+        } else {
+            $this->httpClient = $httpClient;
+        }
     }
 
+    #[\Override]
     #[AsCallback('tl_content', 'fields.instagram_url.save')]
     public function validateOnSave(string $value, DC_Table $dc): string
     {
@@ -73,12 +84,7 @@ class InstagramElementListener extends AbstractElementListener
         if (!isset($this->responseCache[$hash])) {
             $response = $this->httpClient->request(
                 'GET',
-                'https://graph.facebook.com/v23.0/instagram_oembed?'.$parsedQuery,
-                [
-                    'headers' => [
-                        'Authorization' => 'Bearer '.$this->facebookToken,
-                    ],
-                ],
+                'https://graph.facebook.com/v25.0/instagram_oembed?'.$parsedQuery,
             );
 
             if (($status = $response->getStatusCode()) < 200 || $status > 301) {

@@ -7,19 +7,14 @@ namespace Terminal42\OEmbedBundle\EventListener;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\DC_Table;
 use Psr\Log\LoggerInterface;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\Service\ResetInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 abstract class AbstractElementListener implements ResetInterface
 {
     protected array $responseCache = [];
 
-    public function __construct(
-        protected readonly HttpClientInterface $httpClient,
-        protected readonly TranslatorInterface $translator,
-        protected readonly LoggerInterface|null $logger = null,
-    ) {
+    public function __construct(protected readonly LoggerInterface|null $logger = null)
+    {
     }
 
     public function reset(): void
