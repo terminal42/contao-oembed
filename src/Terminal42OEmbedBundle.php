@@ -23,7 +23,7 @@ class Terminal42OEmbedBundle extends AbstractBundle
             ->autowire()
         ;
 
-        $configurator->parameters()->set('terminal42_oembed.facebook_token', $config['facebook_token'] ?: null);
+        $configurator->parameters()->set('terminal42_oembed.facebook_token', $config['facebook_token'] ?? null);
     }
 
     public function configure(DefinitionConfigurator $definition): void
