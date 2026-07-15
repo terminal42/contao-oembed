@@ -27,7 +27,7 @@ abstract class AbstractElementListener implements ResetInterface
     {
         if (
             !($activeRecord = $dc->getActiveRecord())
-            || !$this->isSupported($activeRecord['type'])
+            || !$this->isSupported($activeRecord)
         ) {
             return $value;
         }
