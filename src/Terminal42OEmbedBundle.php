@@ -11,6 +11,8 @@ use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
 class Terminal42OEmbedBundle extends AbstractBundle
 {
+    protected string $extensionAlias = 'terminal42_oembed';
+
     /**
      * @param array<string, mixed> $config
      */
